@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/day_text"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="#5e5e5e"
+            android:gravity="center_vertical"
+            android:paddingLeft="15dp"
+            android:text="JUN 22"
+            android:textColor="@android:color/white"
+            android:textStyle="bold" />
+
+        <ListView
+            android:id="@+id/list_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/day_text" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/no_record_today"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="今日没有账单哦!"
+            android:textSize="20dp" />
+
+    </RelativeLayout>
+</FrameLayout>
