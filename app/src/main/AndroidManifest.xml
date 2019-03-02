@@ -16,7 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddRecordActivity"></activity>
+        <activity
+            android:name=".AddRecordActivity"
+            android:windowSoftInputMode="adjustPan"></activity>
     </application>
 
 </manifest>
