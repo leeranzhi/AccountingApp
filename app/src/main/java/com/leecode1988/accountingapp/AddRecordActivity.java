@@ -92,7 +92,7 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
                     double amount = Double.valueOf(userInput);
                     Log.d(TAG, "final amount is " + amount);
                 } else {
-                    
+
                 }
             }
         });

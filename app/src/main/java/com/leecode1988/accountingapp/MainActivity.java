@@ -31,5 +31,8 @@ public class MainActivity extends AppCompatActivity {
                 AddRecordActivity.actionStart(MainActivity.this, "test");
             }
         });
+
+        GlobalUtil.getInstance().setContext(getApplicationContext());
+
     }
 }

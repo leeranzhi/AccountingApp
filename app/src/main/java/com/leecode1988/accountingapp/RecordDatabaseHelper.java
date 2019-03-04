@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.LinkedList;
 
@@ -31,6 +32,7 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
     public RecordDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         mContext = context;
+        Log.d(TAG, "DatabaseHelp init!");
     }
 
 
@@ -87,7 +89,7 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
 //        Cursor cursor1=db.query(DB_NAME,null,"where date = ?",new String[]{dateStr},null,null,"order by time");
         if (cursor.moveToFirst()) {
             do {
-                String uuid = cursor.getString(cursor.getColumnIndex(""));
+                String uuid = cursor.getString(cursor.getColumnIndex("uuid"));
                 int type = cursor.getInt(cursor.getColumnIndex("type"));
                 String category = cursor.getString(cursor.getColumnIndex("category"));
                 double amount = cursor.getDouble(cursor.getColumnIndex("amount"));
