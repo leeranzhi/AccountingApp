@@ -29,12 +29,7 @@ public class MainFragment extends Fragment {
 
     public MainFragment(String date) {
         this.date = date;
-
-        records.add(new RecordBean());
-        records.add(new RecordBean());
-        records.add(new RecordBean());
-        records.add(new RecordBean());
-        records.add(new RecordBean());
+        records = GlobalUtil.getInstance().databaseHelper.queryRecords(date);
     }
 
     @Nullable
@@ -51,12 +46,15 @@ public class MainFragment extends Fragment {
         listView = rootView.findViewById(R.id.list_view);
         textView.setText(date);
         listViewAdapter = new ListViewAdapter(getContext());
+        reload();
+    }
+
+    public void reload() {
+        records = GlobalUtil.getInstance().databaseHelper.queryRecords(date);
         listViewAdapter.setData(records);
-        listView.setAdapter(listViewAdapter);
 
         if (listViewAdapter.getCount() > 0) {
             rootView.findViewById(R.id.no_record_today).setVisibility(View.INVISIBLE);
-
         }
     }
 }

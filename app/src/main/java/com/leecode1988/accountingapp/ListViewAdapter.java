@@ -1,6 +1,7 @@
 package com.leecode1988.accountingapp;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -15,6 +17,7 @@ import java.util.LinkedList;
  * create:2019/2/13 0:03
  */
 public class ListViewAdapter extends BaseAdapter {
+    private static final String TAG = "ListViewAdapter";
 
     private LinkedList<RecordBean> records = new LinkedList<>();
     private LayoutInflater mInflater;
@@ -73,9 +76,17 @@ class ViewHolder {
 
     public ViewHolder(View itemView, RecordBean record) {
         remarkTv = itemView.findViewById(R.id.textView_remark);
-        amountTv = itemView.findViewById(R.id.amount_text);
+        amountTv = itemView.findViewById(R.id.textView_amount);
         timeTv = itemView.findViewById(R.id.textView_time);
         categoryIcon = itemView.findViewById(R.id.imageView_category);
-//        remarkTv.setText(record.getCategory());
+        remarkTv.setText(record.getRemark());
+
+        if (record.getType() == 1) {
+            amountTv.setText("- " + record.getAmount());
+        } else if (record.getType() == 2) {
+            amountTv.setText("+ " + record.getAmount());
+        }
+        timeTv.setText(DateUtil.getFormattedTime(record.getTimeStamp()));
+        categoryIcon.setImageResource(GlobalUtil.getInstance().getResourceIcon(record.getCategory()));
     }
 }

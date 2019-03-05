@@ -57,6 +57,8 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
         values.put("date", bean.getDate());
         values.put("time", bean.getTimeStamp());
         db.insert(DB_NAME, null, values);
+        values.clear();
+        Log.d(TAG, bean.getUuid() + "---->added");
     }
 
     public void removeRecord(String uuid) {
@@ -133,6 +135,12 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
         cursor.close();
+
+//        Log.d(TAG, "查看此处" + dates.size());
+//        if (dates.size() <= 0) {
+//            dates.add("1970-01-01");
+//            Log.d(TAG, "查询日期为空，已添加默认！！！");
+//        }
         return dates;
     }
 }

@@ -199,9 +199,10 @@
             android:padding="10dp"
             android:text="Book"
             android:textColor="@android:color/white"
-            android:textSize="30sp" />
+            android:textSize="26sp" />
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@+id/edit_text_mark"

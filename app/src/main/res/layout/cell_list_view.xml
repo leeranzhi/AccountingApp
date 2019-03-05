@@ -5,6 +5,7 @@
     android:padding="16dp">
 
     <ImageView
+        android:src="@drawable/ic_category_food"
         android:id="@+id/imageView_category"
         android:layout_width="40dp"
         android:layout_height="40dp"

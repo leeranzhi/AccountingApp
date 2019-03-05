@@ -4,16 +4,28 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
-public class AddRecordActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddRecordActivity extends AppCompatActivity implements View.OnClickListener, CategoryRecyclerAdapter.OnCategoryClickListener {
 
     private static final String TAG = "AddRecordActivity";
     private String userInput = "";
     private TextView amountText;
+
+    private EditText editText;
+    private RecyclerView recyclerView;
+    private CategoryRecyclerAdapter adapter;
+
+    private String category = "General";
+    private RecordBean.RecordType type = RecordBean.RecordType.RECORD_TYPE_EXPENSE;
+    private String remark = category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,10 +48,23 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.keyboard_zero).setOnClickListener(this);
 
         amountText = findViewById(R.id.textView_addView_amount);
+        editText = findViewById(R.id.edit_text_mark);
+        editText.setText(remark);
+
         handleDot();
         handleBackspace();
         handleDone();
         handleTypeChanged();
+
+        recyclerView = findViewById(R.id.recyclerView);
+        adapter = new CategoryRecyclerAdapter(getApplicationContext());
+        recyclerView.setAdapter(adapter);
+        GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 4);
+        recyclerView.setLayoutManager(manager);
+        adapter.notifyDataSetChanged();
+
+        adapter.setOnCategoryClickListener(this);
+
     }
 
 
@@ -61,7 +86,15 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.keyboard_type).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "TypeChanged: ");
+
+                if (type == RecordBean.RecordType.RECORD_TYPE_EXPENSE) {
+                    type = RecordBean.RecordType.RECORD_TYPE_INCOME;
+                } else {
+                    type = RecordBean.RecordType.RECORD_TYPE_EXPENSE;
+                }
+
+                adapter.changedType(type);
+                category = adapter.getSelected();
             }
         });
     }
@@ -90,9 +123,18 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
                 if (!userInput.equals("")) {
                     double amount = Double.valueOf(userInput);
+                    RecordBean recordBean = new RecordBean();
+                    recordBean.setAmount(amount);
+                    recordBean.setType(type == RecordBean.RecordType.RECORD_TYPE_EXPENSE ? 1 : 2);
+
+                    recordBean.setCategory(adapter.getSelected());
+                    recordBean.setRemark(editText.getText().toString());
+                    GlobalUtil.getInstance().databaseHelper.addRecord(recordBean);
+                    finish();
+
                     Log.d(TAG, "final amount is " + amount);
                 } else {
-
+                    Toast.makeText(getApplicationContext(), "金额不能为0！", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -146,6 +188,12 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         Intent intent = new Intent(context, AddRecordActivity.class);
         intent.putExtra("param1", data);
         context.startActivity(intent);
+    }
 
+    @Override
+    public void onClick(String category) {
+        this.category = category;
+        editText.setText(category);
+        Log.d(TAG, "Category:" + category);
     }
 }
