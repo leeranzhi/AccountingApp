@@ -46,7 +46,10 @@ public class MainFragment extends Fragment {
         listView = rootView.findViewById(R.id.list_view);
         textView.setText(date);
         listViewAdapter = new ListViewAdapter(getContext());
+        listView.setAdapter(listViewAdapter);
         reload();
+
+        textView.setText(DateUtil.getDateTitle(date));
     }
 
     public void reload() {
@@ -56,5 +59,15 @@ public class MainFragment extends Fragment {
         if (listViewAdapter.getCount() > 0) {
             rootView.findViewById(R.id.no_record_today).setVisibility(View.INVISIBLE);
         }
+    }
+
+    public int getTotalCost() {
+        double totalCost = 0;
+        for (RecordBean record : records) {
+            if (record.getType() == 1) {
+                totalCost += record.getAmount();
+            }
+        }
+        return (int) totalCost;
     }
 }

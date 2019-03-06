@@ -1,6 +1,8 @@
 package com.leecode1988.accountingapp;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -17,8 +19,35 @@ public class DateUtil {
     }
 
     //Date date->2019-02-09
-    public static String getFormatterDate(){
-        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
+    public static String getFormatterDate() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(new Date());
+    }
+
+    private static Date strToDate(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            return format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return new Date();
+    }
+
+    public static String getWeekDay(String date) {
+        String[] weekdays = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期天"};
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(strToDate(date));
+        int index = calendar.get(Calendar.DAY_OF_WEEK) - 1;
+        return weekdays[index];
+    }
+
+    public static String getDateTitle(String date) {
+        String[] months = {"1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "0月", "11月", "12月"};
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(strToDate(date));
+        int monthsIndex = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        return months[monthsIndex] + String.valueOf(day) + "号";
     }
 }

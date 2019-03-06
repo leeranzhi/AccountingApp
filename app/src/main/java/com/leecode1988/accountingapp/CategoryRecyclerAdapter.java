@@ -80,6 +80,7 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryViewHo
         if (type == RecordBean.RecordType.RECORD_TYPE_EXPENSE) {
             cellList = GlobalUtil.getInstance().costRes;
         } else {
+
             cellList = GlobalUtil.getInstance().earnRes;
         }
 

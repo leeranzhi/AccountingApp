@@ -23,7 +23,7 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
     private RecyclerView recyclerView;
     private CategoryRecyclerAdapter adapter;
 
-    private String category = "General";
+    private String category = GlobalUtil.getInstance().costRes.get(0).title;
     private RecordBean.RecordType type = RecordBean.RecordType.RECORD_TYPE_EXPENSE;
     private String remark = category;
 
@@ -95,6 +95,8 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
 
                 adapter.changedType(type);
                 category = adapter.getSelected();
+                remark = category;
+                editText.setText(category);
             }
         });
     }

@@ -7,14 +7,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+
+import com.robinhood.ticker.TickerUtils;
+import com.robinhood.ticker.TickerView;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
     private static final String TAG = "MainActivity";
 
     private ViewPager viewPager;
     private MainViewPagerAdapter pagerAdapter;
     private FloatingActionButton fbAddRecord;
+    private TickerView amountText;
+    private TextView dateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,10 +29,16 @@ public class MainActivity extends AppCompatActivity {
 
         GlobalUtil.getInstance().setContext(getApplicationContext());
 
+        amountText = findViewById(R.id.amount_text);
+        amountText.setCharacterLists(TickerUtils.provideNumberList());
+        dateText = findViewById(R.id.date_text);
+
         viewPager = findViewById(R.id.view_pager);
         pagerAdapter = new MainViewPagerAdapter(getSupportFragmentManager());
         pagerAdapter.notifyDataSetChanged();
         viewPager.setAdapter(pagerAdapter);
+
+        viewPager.setOnPageChangeListener(this);
 
         viewPager.setCurrentItem(pagerAdapter.getLastIndex());
         fbAddRecord = findViewById(R.id.add_amount);
@@ -43,7 +55,26 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Log.d(TAG,"onActivityResult");
+        Log.d(TAG, "onActivityResult");
         pagerAdapter.reload();
+    }
+
+
+    @Override
+    public void onPageSelected(int position) {
+        String amount = String.valueOf(pagerAdapter.getTotalCost(position));
+        amountText.setText(amount);
+        String date = pagerAdapter.getDateStr(position);
+        dateText.setText(DateUtil.getWeekDay(date));
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 }

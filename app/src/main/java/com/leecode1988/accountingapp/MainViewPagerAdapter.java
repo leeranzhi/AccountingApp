@@ -54,4 +54,12 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
             fragment.reload();
         }
     }
+
+    public int getTotalCost(int index) {
+        return fragments.get(index).getTotalCost();
+    }
+
+    public String getDateStr(int index) {
+        return dates.get(index);
+    }
 }
