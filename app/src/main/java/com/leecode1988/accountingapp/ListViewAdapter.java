@@ -24,8 +24,13 @@ public class ListViewAdapter extends BaseAdapter {
     private Context mContext;
 
     public ListViewAdapter(Context context) {
-        this.mContext = context;
-        mInflater = LayoutInflater.from(mContext);
+        if (context != null) {
+            this.mContext = context;
+            mInflater = LayoutInflater.from(mContext);
+        } else {
+
+            Log.d(TAG, "此处请注意:----->" + context == null ? "1" : "2");
+        }
     }
 
     public void setData(LinkedList<RecordBean> records) {

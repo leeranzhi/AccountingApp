@@ -16,6 +16,7 @@ public class GlobalUtil {
     public Context context;
 
     public RecordDatabaseHelper databaseHelper;
+    public MainActivity mainActivity;
 
     public LinkedList<CategoryResBean> costRes = new LinkedList<>();
     public LinkedList<CategoryResBean> earnRes = new LinkedList<>();

@@ -27,6 +27,9 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
     private RecordBean.RecordType type = RecordBean.RecordType.RECORD_TYPE_EXPENSE;
     private String remark = category;
 
+    RecordBean record = new RecordBean();
+    private boolean inEditMode = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +49,23 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.keyboard_eight).setOnClickListener(this);
         findViewById(R.id.keyboard_nine).setOnClickListener(this);
         findViewById(R.id.keyboard_zero).setOnClickListener(this);
-
         amountText = findViewById(R.id.textView_addView_amount);
         editText = findViewById(R.id.edit_text_mark);
+
+        RecordBean record = (RecordBean) getIntent().getSerializableExtra("record");
+        if (record != null) {
+            Log.d(TAG, "getIntent " + record.getRemark());
+            inEditMode = true;
+            this.record = record;
+            this.category = record.getCategory();
+            this.remark = category;
+
+            amountText.setText(record.getAmount() + "");
+            userInput = String.valueOf(record.getAmount());
+            type = record.getType() == 1 ? RecordBean.RecordType.RECORD_TYPE_EXPENSE :
+                    RecordBean.RecordType.RECORD_TYPE_INCOME;
+        }
+
         editText.setText(remark);
 
         handleDot();
@@ -57,9 +74,9 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         handleTypeChanged();
 
         recyclerView = findViewById(R.id.recyclerView);
-        adapter = new CategoryRecyclerAdapter(getApplicationContext());
+        adapter = new CategoryRecyclerAdapter(getApplicationContext(), category);
         recyclerView.setAdapter(adapter);
-        GridLayoutManager manager = new GridLayoutManager(getApplicationContext(), 4);
+        GridLayoutManager manager = new GridLayoutManager(AddRecordActivity.this, 4);
         recyclerView.setLayoutManager(manager);
         adapter.notifyDataSetChanged();
 
@@ -125,18 +142,23 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
             public void onClick(View v) {
                 if (!userInput.equals("")) {
                     double amount = Double.valueOf(userInput);
-                    RecordBean recordBean = new RecordBean();
-                    recordBean.setAmount(amount);
-                    recordBean.setType(type == RecordBean.RecordType.RECORD_TYPE_EXPENSE ? 1 : 2);
 
-                    recordBean.setCategory(adapter.getSelected());
-                    recordBean.setRemark(editText.getText().toString());
-                    GlobalUtil.getInstance().databaseHelper.addRecord(recordBean);
+                    record.setAmount(amount);
+                    record.setType(type == RecordBean.RecordType.RECORD_TYPE_EXPENSE ? 1 : 2);
+
+                    record.setCategory(adapter.getSelected());
+                    record.setRemark(editText.getText().toString());
+
+                    if (inEditMode) {
+                        GlobalUtil.getInstance().databaseHelper.editRecord(record.getUuid(), record);
+                    } else {
+                        GlobalUtil.getInstance().databaseHelper.addRecord(record);
+                    }
+
                     finish();
-
                     Log.d(TAG, "final amount is " + amount);
                 } else {
-                    Toast.makeText(getApplicationContext(), "金额不能为0！", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddRecordActivity.this, "金额不能为0！", Toast.LENGTH_SHORT).show();
                 }
             }
         });

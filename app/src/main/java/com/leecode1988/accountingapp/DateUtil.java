@@ -43,7 +43,7 @@ public class DateUtil {
     }
 
     public static String getDateTitle(String date) {
-        String[] months = {"1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "0月", "11月", "12月"};
+        String[] months = {"1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"};
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(strToDate(date));
         int monthsIndex = calendar.get(Calendar.MONTH);

@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private FloatingActionButton fbAddRecord;
     private TickerView amountText;
     private TextView dateText;
+    private int currentPagerPosition = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         setContentView(R.layout.activity_main);
 
         GlobalUtil.getInstance().setContext(getApplicationContext());
+        GlobalUtil.getInstance().mainActivity = this;
 
         amountText = findViewById(R.id.amount_text);
         amountText.setCharacterLists(TickerUtils.provideNumberList());
@@ -50,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
             }
         });
+        updateHeader();
     }
 
     @Override
@@ -57,14 +60,20 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult");
         pagerAdapter.reload();
+        updateHeader();
     }
 
 
     @Override
     public void onPageSelected(int position) {
-        String amount = String.valueOf(pagerAdapter.getTotalCost(position));
+        currentPagerPosition = position;
+        updateHeader();
+    }
+
+    public void updateHeader() {
+        String amount = String.valueOf(pagerAdapter.getTotalCost(currentPagerPosition));
         amountText.setText(amount);
-        String date = pagerAdapter.getDateStr(position);
+        String date = pagerAdapter.getDateStr(currentPagerPosition);
         dateText.setText(DateUtil.getWeekDay(date));
     }
 

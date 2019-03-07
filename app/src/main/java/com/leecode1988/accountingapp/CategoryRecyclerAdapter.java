@@ -3,6 +3,7 @@ package com.leecode1988.accountingapp;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,7 @@ import java.util.LinkedList;
  * create:2019/3/4 10:33
  */
 public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
-
+    private static final String TAG = "CategoryRecyclerAdapter";
     private LayoutInflater mInflater;
     public Context mContext;
     private LinkedList<CategoryResBean> cellList = GlobalUtil.getInstance().costRes;
@@ -34,10 +35,30 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryViewHo
         this.onCategoryClickListener = onCategoryClickListener;
     }
 
-    public CategoryRecyclerAdapter(Context context) {
+    public CategoryRecyclerAdapter(Context context, String category) {
         this.mContext = context;
         mInflater = LayoutInflater.from(mContext);
-        selected = cellList.get(0).title;
+
+        if (findFromCellList(category) == -1) {
+            changedType(RecordBean.RecordType.RECORD_TYPE_INCOME);
+        }
+        Log.d(TAG, "-->" + category);
+        selected = category;
+    }
+
+    /**
+     * 查找category是否在默认的cellList中
+     *
+     * @param category
+     * @return 返回-1则表示不在,需要切换list.
+     */
+    private int findFromCellList(String category) {
+        for (int i = 0; i < cellList.size(); i++) {
+            if (category.equals(cellList.get(i).title)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     @NonNull

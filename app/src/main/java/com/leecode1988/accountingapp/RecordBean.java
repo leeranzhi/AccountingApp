@@ -2,13 +2,14 @@ package com.leecode1988.accountingapp;
 
 import android.util.Log;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * author:LeeCode
  * create:2019/2/9 20:32
  */
-public class RecordBean {
+public class RecordBean implements Serializable {
     private static final String TAG = "RecordBean";
 
     public enum RecordType {
