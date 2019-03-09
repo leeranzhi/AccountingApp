@@ -12,8 +12,10 @@
 
         <ImageView
             android:id="@+id/imageView_category"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/circle"
             android:src="@drawable/ic_category_add" />
 
         <TextView

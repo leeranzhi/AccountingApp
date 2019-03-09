@@ -30,7 +30,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:background="@android:color/white"
+                        android:background="@drawable/btn_touch"
                         android:text="7" />
 
                     <Button
@@ -147,9 +147,9 @@
                     android:id="@+id/keyboard_type"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:background="@android:color/white"
-                    android:src="@drawable/ic_add_black_64" />
+                    android:src="@drawable/ic_cover_type" />
 
                 <ImageButton
                     android:id="@+id/keyboard_backspace"
@@ -157,7 +157,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:background="@android:color/white"
-                    android:src="@drawable/ic_backspace_64" />
+                    android:src="@drawable/ic_backspace" />
 
                 <ImageButton
                     android:id="@+id/keyboard_done"
@@ -165,7 +165,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:background="@android:color/white"
-                    android:src="@drawable/ic_select_64" />
+                    android:src="@drawable/ic_done" />
 
             </LinearLayout>
 
