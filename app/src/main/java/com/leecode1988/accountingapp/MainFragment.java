@@ -49,9 +49,8 @@ public class MainFragment extends Fragment implements AdapterView.OnItemLongClic
     private void initView() {
         textView = rootView.findViewById(R.id.day_text);
         listView = rootView.findViewById(R.id.list_view);
-        textView.setText(date);
-//        listViewAdapter = new ListViewAdapter(getContext());
-//        listView.setAdapter(listViewAdapter);
+        listViewAdapter = new ListViewAdapter(getActivity());
+        listView.setAdapter(listViewAdapter);
         reload();
 
         textView.setText(DateUtil.getDateTitle(date));
@@ -61,15 +60,19 @@ public class MainFragment extends Fragment implements AdapterView.OnItemLongClic
     public void reload() {
         records = GlobalUtil.getInstance().databaseHelper.queryRecords(date);
         if (listViewAdapter == null) {
-            listViewAdapter = new ListViewAdapter(getContext());
+            listViewAdapter = new ListViewAdapter(getActivity());
         }
 
         listViewAdapter.setData(records);
 
-        listView.setAdapter(listViewAdapter);
+//        listView.setAdapter(listViewAdapter);
 
         if (listViewAdapter.getCount() > 0) {
-            rootView.findViewById(R.id.no_record_today).setVisibility(View.INVISIBLE);
+            if (rootView == null) {
+                Log.d(TAG, "--->遭遇到了一些错误");
+            } else {
+                rootView.findViewById(R.id.no_record_today).setVisibility(View.INVISIBLE);
+            }
         }
     }
 
@@ -122,5 +125,11 @@ public class MainFragment extends Fragment implements AdapterView.OnItemLongClic
         });
         builder.setNegativeButton("取消", null);
         builder.create().show();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d(TAG,"--->onDestroyView");
     }
 }

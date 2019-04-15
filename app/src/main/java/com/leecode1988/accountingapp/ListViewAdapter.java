@@ -57,19 +57,32 @@ public class ListViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         ViewHolder holder;
-
+        RecordBean record = (RecordBean) getItem(position);
         if (convertView == null) {
             view = mInflater.inflate(R.layout.cell_list_view, parent, false);
-            RecordBean recordBean = (RecordBean) getItem(position);
-            holder = new ViewHolder(view, recordBean);
+            holder = new ViewHolder(view, record);
             view.setTag(holder);
         } else {
             view = convertView;
             holder = (ViewHolder) view.getTag();
         }
 
+        setViewContent(holder,record);
         return view;
     }
+
+    private void setViewContent(ViewHolder holder, RecordBean record){
+        holder.remarkTv.setText(record.getRemark());
+
+        if (record.getType() == 1) {
+            holder.amountTv.setText("- " + record.getAmount());
+        } else if (record.getType() == 2) {
+            holder.amountTv.setText("+ " + record.getAmount());
+        }
+        holder.timeTv.setText(DateUtil.getFormattedTime(record.getTimeStamp()));
+        holder.categoryIcon.setImageResource(GlobalUtil.getInstance().getResourceIcon(record.getCategory()));
+    }
+
 }
 
 class ViewHolder {
@@ -84,14 +97,5 @@ class ViewHolder {
         amountTv = itemView.findViewById(R.id.textView_amount);
         timeTv = itemView.findViewById(R.id.textView_time);
         categoryIcon = itemView.findViewById(R.id.imageView_category);
-        remarkTv.setText(record.getRemark());
-
-        if (record.getType() == 1) {
-            amountTv.setText("- " + record.getAmount());
-        } else if (record.getType() == 2) {
-            amountTv.setText("+ " + record.getAmount());
-        }
-        timeTv.setText(DateUtil.getFormattedTime(record.getTimeStamp()));
-        categoryIcon.setImageResource(GlobalUtil.getInstance().getResourceIcon(record.getCategory()));
     }
 }
