@@ -7,7 +7,7 @@
 
   
 
-  1.用户进入添加账目界面，进行消费金额的输入和消费类型的点按选择，如图1添加一笔三餐类型的支出，如图2添加一笔交通类型的支出所示。
+  1.  用户进入添加账目界面，进行消费金额的输入和消费类型的点按选择，如图1添加一笔三餐类型的支出，如图2添加一笔交通类型的支出所示。
 
 <div align="center">
     <img src="https://github.com/leeranzhi/AccountingApp/blob/master/Screenshot/%E5%9B%BE%E7%89%871.png" width="35%" height="35%">
@@ -15,7 +15,7 @@
 </div>
 
 
-​       2.用户添加账目后返回主界面会实时更新新添加的记录，如图3返回主界面更新新的记录所示。
+​         2. 用户添加账目后返回主界面会实时更新新添加的记录，如图3返回主界面更新新的记录所示。
 
 <div align="center">
     <img src="https://github.com/leeranzhi/AccountingApp/blob/master/Screenshot/%E5%9B%BE%E7%89%873.png" width="35%" height="35%">
@@ -23,7 +23,7 @@
 
 
 
-​      3.用户在主界面长按单条账目，弹出操作提示框，提示用户删除或者编辑修改操作。如图4长按弹出操作提示框，如图5删除一条记录后的信息更新图。
+​        3. 用户在主界面长按单条账目，弹出操作提示框，提示用户删除或者编辑修改操作。如图4长按弹出操作提示框，如图5删除一条记录后的信息更新图。
 
 <div align="center">
     <img src="https://github.com/leeranzhi/AccountingApp/blob/master/Screenshot/%E5%9B%BE%E7%89%874.png" width="35%" height="35%">
