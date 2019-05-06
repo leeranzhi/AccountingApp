@@ -22,6 +22,7 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryViewHo
     private LayoutInflater mInflater;
     public Context mContext;
     private LinkedList<CategoryResBean> cellList = GlobalUtil.getInstance().costRes;
+    private int size = cellList.size();
 
     public String getSelected() {
         return selected;
@@ -38,6 +39,12 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryViewHo
     public CategoryRecyclerAdapter(Context context, String category) {
         this.mContext = context;
         mInflater = LayoutInflater.from(mContext);
+        Log.d(TAG,"-->查看是否会执行");
+        if (cellList.size() > size) {
+            cellList.clear();
+            Log.d(TAG,"《--》"+GlobalUtil.getInstance().costRes);
+            cellList =GlobalUtil.getInstance().costRes;
+        }
 
         if (findFromCellList(category) == -1) {
             changedType(RecordBean.RecordType.RECORD_TYPE_INCOME);
@@ -94,6 +101,8 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryViewHo
         } else {
             holder.background.setBackgroundResource(R.color.colorPrimary);
         }
+
+        Log.d(TAG, "-->" + getItemCount());
 
     }
 
