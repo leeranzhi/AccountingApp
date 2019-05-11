@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">AccountingApp</string>
+    <string name="drawer_item_home">首页</string>
+    <string name="drawer_item_settings">设置</string>
+    <string name="drawer_item_statistics">查看月统计</string>
+    <string name="drawer_item_statistics_year">查看年统计</string>
+    <string name="drawer_item_section_header">其他</string>
+    <string name="drawer_item_exit">退出应用</string>
 </resources>

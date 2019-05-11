@@ -28,7 +28,6 @@ public class ListViewAdapter extends BaseAdapter {
             this.mContext = context;
             mInflater = LayoutInflater.from(mContext);
         } else {
-
             Log.d(TAG, "此处请注意:----->" + context == null ? "1" : "2");
         }
     }
