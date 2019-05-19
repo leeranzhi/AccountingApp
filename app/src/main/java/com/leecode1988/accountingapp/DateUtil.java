@@ -11,6 +11,11 @@ import java.util.Date;
  */
 public class DateUtil {
 
+    /**
+     * 时间戳转为 HH:mm
+     * @param timeStamp
+     * @return String
+     */
     //unix time->11:11
     public static String getFormattedTime(long timeStamp) {
         //yyyy-MM-dd HH:mm:ss
@@ -18,12 +23,21 @@ public class DateUtil {
         return format.format(new Date(timeStamp));
     }
 
+    /**
+     * 获取当前时间 年-月-日
+     * @return String类型
+     */
     //Date date->2019-02-09
     public static String getFormatterDate() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(new Date());
     }
 
+    /**
+     * String类型date转换为Date型
+     * @param date
+     * @return
+     */
     private static Date strToDate(String date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         try {

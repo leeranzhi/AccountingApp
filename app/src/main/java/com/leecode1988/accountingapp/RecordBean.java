@@ -16,7 +16,6 @@ public class RecordBean implements Serializable {
         RECORD_TYPE_EXPENSE, RECORD_TYPE_INCOME
     }
 
-
     private double amount;
     private RecordType type;
     private String category;

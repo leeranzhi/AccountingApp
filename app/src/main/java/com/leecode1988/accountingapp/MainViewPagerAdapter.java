@@ -3,7 +3,6 @@ package com.leecode1988.accountingapp;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.util.Log;
 
 import java.util.LinkedList;
 
@@ -23,7 +22,8 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     private void initFragment() {
-        dates = GlobalUtil.getInstance().databaseHelper.getAvaliableDate();
+        dates = GlobalUtil.getInstance().databaseHelper.getAvailableDate();
+        //如果dates中不包含当天的日期，则放入一个当天的日期
         if (!dates.contains(DateUtil.getFormatterDate())) {
             dates.addLast(DateUtil.getFormatterDate());
         }

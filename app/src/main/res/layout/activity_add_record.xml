@@ -6,9 +6,21 @@
     tools:context=".AddRecordActivity"
     android:id="@+id/ll_layout"
     android:orientation="vertical">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize">
 
     <include layout="@layout/layout_toolbar" />
-
+    <TextView
+        android:id="@+id/toolbar_time"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginRight="@dimen/material_drawer_vertical_padding"
+        android:layout_alignParentRight="true"
+        android:textColor="@android:color/white"
+        android:text="2019/5/19"/>
+</RelativeLayout>
     <RelativeLayout
         android:id="@+id/rl_addView_amount"
         android:layout_width="match_parent"

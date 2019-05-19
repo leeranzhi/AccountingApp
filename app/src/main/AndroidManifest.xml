@@ -20,7 +20,8 @@
         </activity>
         <activity
             android:name=".AddRecordActivity"
-            android:windowSoftInputMode="adjustPan"></activity>
+            android:windowSoftInputMode="adjustPan"
+            android:label="记一笔"></activity>
     </application>
 
 </manifest>

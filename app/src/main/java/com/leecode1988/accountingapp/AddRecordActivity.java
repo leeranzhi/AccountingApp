@@ -1,24 +1,32 @@
 package com.leecode1988.accountingapp;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class AddRecordActivity extends AppCompatActivity implements View.OnClickListener, CategoryRecyclerAdapter.OnCategoryClickListener {
+import java.util.Calendar;
+
+
+public class AddRecordActivity extends BaseActivity implements View.OnClickListener, CategoryRecyclerAdapter.OnCategoryClickListener{
 
     private static final String TAG = "AddRecordActivity";
     private String userInput = "";
     private TextView amountText;
+    private TextView toolbarTime;
+    private String date;
 
     private EditText editText;
     private RecyclerView recyclerView;
@@ -42,6 +50,10 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
     private void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        ActionBar actionBar=getSupportActionBar();
+        if(actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         findViewById(R.id.keyboard_one).setOnClickListener(this);
         findViewById(R.id.keyboard_two).setOnClickListener(this);
@@ -55,6 +67,9 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         findViewById(R.id.keyboard_zero).setOnClickListener(this);
         amountText = findViewById(R.id.textView_addView_amount);
         editText = findViewById(R.id.edit_text_mark);
+        toolbarTime=findViewById(R.id.toolbar_time);
+
+        toolbarTime.setText(DateUtil.getFormatterDate());
 
         RecordBean record = (RecordBean) getIntent().getSerializableExtra("record");
         if (record != null) {
@@ -63,11 +78,16 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
             this.record = record;
             this.category = record.getCategory();
             this.remark = category;
-
+            this.date=record.getDate();
+            toolbarTime.setText(date);
             amountText.setText(record.getAmount() + "");
             userInput = String.valueOf(record.getAmount());
             type = record.getType() == 1 ? RecordBean.RecordType.RECORD_TYPE_EXPENSE :
                     RecordBean.RecordType.RECORD_TYPE_INCOME;
+        }
+
+        if(inEditMode){
+            actionBar.setTitle(R.string.edit_record);
         }
 
         editText.setText(remark);
@@ -76,6 +96,7 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         handleBackspace();
         handleDone();
         handleTypeChanged();
+        handleToolBarTime();
 
         recyclerView = findViewById(R.id.recyclerView);
         adapter = new CategoryRecyclerAdapter(getApplicationContext(), category);
@@ -88,6 +109,23 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    private void handleToolBarTime() {
+        toolbarTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar calendar= Calendar.getInstance();
+                DatePickerDialog dialog=new DatePickerDialog(AddRecordActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        date=String.format("%d-%d-%d",year,month+1,dayOfMonth);
+                        toolbarTime.setText(date);
+                    }
+                },calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+                dialog.show();
+            }
+        });
+    }
 
     private void handleDot() {
         findViewById(R.id.keyboard_dot).setOnClickListener(new View.OnClickListener() {
@@ -152,7 +190,10 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
 
                     record.setCategory(adapter.getSelected());
                     record.setRemark(editText.getText().toString());
-
+                    if(date!=null){
+                        record.setDate(date);
+                        Log.d(TAG,""+date);
+                    }
                     if (inEditMode) {
                         GlobalUtil.getInstance().databaseHelper.editRecord(record.getUuid(), record);
                     } else {
@@ -223,5 +264,21 @@ public class AddRecordActivity extends AppCompatActivity implements View.OnClick
         this.category = category;
         editText.setText(category);
         Log.d(TAG, "Category:" + category);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+        super.onBackPressed();
     }
 }

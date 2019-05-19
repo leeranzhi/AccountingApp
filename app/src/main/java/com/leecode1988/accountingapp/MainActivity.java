@@ -5,20 +5,23 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
 import com.mikepenz.materialdrawer.DrawerBuilder;
 import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
 import com.mikepenz.materialdrawer.model.ProfileDrawerItem;
+import com.mikepenz.materialdrawer.model.ProfileSettingDrawerItem;
 import com.mikepenz.materialdrawer.model.SecondaryDrawerItem;
 import com.mikepenz.materialdrawer.model.SectionDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
@@ -26,8 +29,11 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
     private static final String TAG = "MainActivity";
 
     private ViewPager viewPager;
@@ -40,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
     private Drawer result = null;
     private AccountHeader headerResult = null;
     //账户设置标识符
-    private static final int PROFILE_SETTING = 1;
+    private static final int PROFILE_SETTING_ADD_COUNT = 1;
+    private static final int PROFILE_SETTING = 2;
     //个人简介
     private IProfile profile;
     private IProfile profile2;
@@ -55,7 +62,6 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         GlobalUtil.getInstance().setContext(getApplicationContext());
         GlobalUtil.getInstance().mainActivity = this;
 
@@ -68,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         pagerAdapter.notifyDataSetChanged();
         viewPager.setAdapter(pagerAdapter);
 
-        viewPager.setOnPageChangeListener(this);
+        viewPager.addOnPageChangeListener(this);
 
         viewPager.setCurrentItem(pagerAdapter.getLastIndex());
         fbAddRecord = findViewById(R.id.add_amount);
@@ -100,8 +106,8 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
      */
     private void initDrawer(Bundle savedInstanceState) {
         profile = new ProfileDrawerItem().withName("Lee Code").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
-        profile2 = new ProfileDrawerItem().withName("Lee Code").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
-        profile3 = new ProfileDrawerItem().withName("Lee Code").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
+        profile2 = new ProfileDrawerItem().withName("Lee Code2").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
+        profile3 = new ProfileDrawerItem().withName("Lee Code3").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
         //创建AccountHeader
         buildHeader(false, savedInstanceState);
 
@@ -115,12 +121,22 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                         new PrimaryDrawerItem().withName(R.string.drawer_item_statistics).withIcon(R.drawable.ic_drawer_left_statistics),
                         new PrimaryDrawerItem().withName(R.string.drawer_item_statistics_year).withIcon(R.drawable.ic_drawer_statistics),
                         new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(R.drawable.ic_drawer_setting),
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(GoogleMaterial.Icon.gmd_settings),
                         new SecondaryDrawerItem().withName(R.string.drawer_item_exit).withIcon(R.drawable.ic_drawer_exit))
                 .addStickyDrawerItems()
+                .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
+                    @Override
+                    public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
+                        switch (position){
+                            case 6:
+                                ActivityCollector.finishAll();
+                            default:
+                                return true;
+                        }
+                    }
+                })
                 .withSavedInstance(savedInstanceState)
                 .build();
-
     }
 
     /**
@@ -136,7 +152,13 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                 .withActivity(this)
                 .withHeaderBackground(R.drawable.ic_drawer_header)
                 .withCompactStyle(compat)
-                .addProfiles(profile, profile2, profile3)
+                .addProfiles(
+                        profile,
+                        profile2,
+                        profile3,
+                        new ProfileSettingDrawerItem().withName("添加账户").withDescription("添加一个新的用户").withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_add).actionBar().paddingDp(5).colorRes(R.color.material_drawer_primary_text)).withIdentifier(PROFILE_SETTING_ADD_COUNT),
+                        new ProfileSettingDrawerItem().withName("账户管理").withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(12).withIdentifier(PROFILE_SETTING)
+                )
                 .withTextColor(ContextCompat.getColor(this, R.color.material_drawer_dark_primary_text))
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -150,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
                                 headerResult.addProfiles(newProfile);
                             }
                         }
+                        //如果事件没有被消耗，且应该关闭Drawer，返回false
                         return false;
                     }
                 })
@@ -203,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        //将需要保存的至从抽屉添加至Bundle
+        //将需要保存的值从抽屉添加至Bundle
         outState = result.saveInstanceState(outState);
         //将需要保存的值从accountHeader添加至Bundle
         outState = headerResult.saveInstanceState(outState);
@@ -218,5 +241,11 @@ public class MainActivity extends AppCompatActivity implements ViewPager.OnPageC
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ActivityCollector.finishAll();
     }
 }

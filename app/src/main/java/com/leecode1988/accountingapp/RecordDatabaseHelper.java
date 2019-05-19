@@ -119,7 +119,7 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
      *
      * @return
      */
-    public LinkedList<String> getAvaliableDate() {
+    public LinkedList<String> getAvailableDate() {
 
         LinkedList<String> dates = new LinkedList<>();
         SQLiteDatabase db = this.getWritableDatabase();

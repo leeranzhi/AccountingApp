@@ -17,7 +17,7 @@ import java.util.LinkedList;
  * author:LeeCode
  * create:2019/3/4 10:33
  */
-public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryViewHolder> {
+public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecyclerAdapter.CategoryViewHolder> {
     private static final String TAG = "CategoryRecyclerAdapter";
     private LayoutInflater mInflater;
     public Context mContext;
@@ -74,7 +74,7 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryViewHo
     public void onBindViewHolder(@NonNull CategoryViewHolder holder, int position) {
         final CategoryResBean res = cellList.get(position);
 
-        holder.imageView.setImageResource(res.resBlack);
+        holder.imageView.setImageResource(res.resWhite);
         holder.textView.setText(res.title);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -121,19 +121,20 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryViewHo
     public interface OnCategoryClickListener {
         void onClick(String category);
     }
-}
 
+    static class CategoryViewHolder extends RecyclerView.ViewHolder {
 
-class CategoryViewHolder extends RecyclerView.ViewHolder {
+        RelativeLayout background;
+        ImageView imageView;
+        TextView textView;
 
-    RelativeLayout background;
-    ImageView imageView;
-    TextView textView;
-
-    public CategoryViewHolder(@NonNull View itemView) {
-        super(itemView);
-        background = itemView.findViewById(R.id.cell_background);
-        imageView = itemView.findViewById(R.id.imageView_category);
-        textView = itemView.findViewById(R.id.textView_category);
+        public CategoryViewHolder(@NonNull View itemView) {
+            super(itemView);
+            background = itemView.findViewById(R.id.cell_background);
+            imageView = itemView.findViewById(R.id.imageView_category);
+            textView = itemView.findViewById(R.id.textView_category);
+        }
     }
+
 }
+
