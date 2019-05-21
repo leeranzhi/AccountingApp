@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -28,9 +27,6 @@ import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
 import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
-
-import java.lang.reflect.Array;
-import java.util.Arrays;
 
 
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
@@ -127,7 +123,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        switch (position){
+                        switch (position) {
                             case 6:
                                 ActivityCollector.finishAll();
                             default:
@@ -197,6 +193,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult");
         pagerAdapter.reload();
+        pagerAdapter.notifyDataSetChanged();
         updateHeader();
     }
 

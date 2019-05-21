@@ -20,7 +20,7 @@ import android.widget.Toast;
 import java.util.Calendar;
 
 
-public class AddRecordActivity extends BaseActivity implements View.OnClickListener, CategoryRecyclerAdapter.OnCategoryClickListener{
+public class AddRecordActivity extends BaseActivity implements View.OnClickListener, CategoryRecyclerAdapter.OnCategoryClickListener, DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = "AddRecordActivity";
     private String userInput = "";
@@ -50,8 +50,8 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
     private void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        ActionBar actionBar=getSupportActionBar();
-        if(actionBar!=null){
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
@@ -67,7 +67,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
         findViewById(R.id.keyboard_zero).setOnClickListener(this);
         amountText = findViewById(R.id.textView_addView_amount);
         editText = findViewById(R.id.edit_text_mark);
-        toolbarTime=findViewById(R.id.toolbar_time);
+        toolbarTime = findViewById(R.id.toolbar_time);
 
         toolbarTime.setText(DateUtil.getFormatterDate());
 
@@ -78,7 +78,8 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
             this.record = record;
             this.category = record.getCategory();
             this.remark = category;
-            this.date=record.getDate();
+            this.date = record.getDate();
+            Log.d(TAG, date);
             toolbarTime.setText(date);
             amountText.setText(record.getAmount() + "");
             userInput = String.valueOf(record.getAmount());
@@ -86,7 +87,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
                     RecordBean.RecordType.RECORD_TYPE_INCOME;
         }
 
-        if(inEditMode){
+        if (inEditMode) {
             actionBar.setTitle(R.string.edit_record);
         }
 
@@ -109,22 +110,34 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
 
     }
 
+    /**
+     * 解析toolbar标题栏时间点击事件
+     */
     private void handleToolBarTime() {
         toolbarTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final Calendar calendar= Calendar.getInstance();
-                DatePickerDialog dialog=new DatePickerDialog(AddRecordActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        date=String.format("%d-%d-%d",year,month+1,dayOfMonth);
-                        toolbarTime.setText(date);
-                    }
-                },calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
+                final Calendar calendar = Calendar.getInstance();
+                DatePickerDialog dialog = new DatePickerDialog(AddRecordActivity.this,
+                        AddRecordActivity.this, calendar.get(Calendar.YEAR),
+                        calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                 dialog.show();
             }
         });
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String monthPre = "";
+        String dayPre = "";
+        if (month + 1 <= 9) {
+            monthPre = "0";
+        }
+        if (dayOfMonth <= 9) {
+            dayPre = "0";
+        }
+        date = year + "-" + monthPre + (month + 1) + "-" + dayPre + dayOfMonth;
+        toolbarTime.setText(date);
     }
 
     private void handleDot() {
@@ -135,7 +148,6 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
 
                 if (!userInput.contains(".")) {
                     userInput += ".";
-
                 }
             }
         });
@@ -190,9 +202,9 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
 
                     record.setCategory(adapter.getSelected());
                     record.setRemark(editText.getText().toString());
-                    if(date!=null){
+                    if (date != null) {
                         record.setDate(date);
-                        Log.d(TAG,""+date);
+                        Log.d(TAG, "" + date);
                     }
                     if (inEditMode) {
                         GlobalUtil.getInstance().databaseHelper.editRecord(record.getUuid(), record);
@@ -268,7 +280,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
+        switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
                 return true;

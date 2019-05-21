@@ -30,7 +30,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemLongClic
     private ListView listView;
     private String date;
     private ListViewAdapter listViewAdapter;
-    private LinkedList<RecordBean> records = new LinkedList<>();
+    private LinkedList<RecordBean> records;
 
     public MainFragment(String date) {
         this.date = date;
@@ -41,9 +41,22 @@ public class MainFragment extends Fragment implements AdapterView.OnItemLongClic
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        }
         initView();
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        Log.d(TAG, "onResume()");
+        super.onResume();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     private void initView() {
@@ -53,7 +66,7 @@ public class MainFragment extends Fragment implements AdapterView.OnItemLongClic
         listView.setAdapter(listViewAdapter);
         reload();
 
-        textView.setText(DateUtil.getDateTitle(date));
+        textView.setText(DateUtil.getDateYear(date) + DateUtil.getDateTitle(date));
         listView.setOnItemLongClickListener(this);
     }
 
@@ -66,12 +79,13 @@ public class MainFragment extends Fragment implements AdapterView.OnItemLongClic
         listViewAdapter.setData(records);
 
 //        listView.setAdapter(listViewAdapter);
-
-        if (listViewAdapter.getCount() > 0) {
-            if (rootView == null) {
-                Log.d(TAG, "--->遭遇到了一些错误");
-            } else {
+        if (rootView == null) {
+            Log.d(TAG, "--->遭遇到了一些错误");
+        } else {
+            if (listViewAdapter.getCount() > 0) {
                 rootView.findViewById(R.id.no_record_today).setVisibility(View.INVISIBLE);
+            } else {
+                rootView.findViewById(R.id.no_record_today).setVisibility(View.VISIBLE);
             }
         }
     }
@@ -87,7 +101,8 @@ public class MainFragment extends Fragment implements AdapterView.OnItemLongClic
     }
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position,
+                                   long id) {
         Log.d(TAG, "index" + position + "clicked");
         showDialog(position);
         return false;
@@ -130,6 +145,15 @@ public class MainFragment extends Fragment implements AdapterView.OnItemLongClic
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(TAG,"--->onDestroyView");
+        if (rootView != null) {
+            ((ViewGroup) rootView.getParent()).removeView(rootView);
+        }
+        Log.d(TAG, "--->onDestroyView");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "--->onDestroy");
     }
 }

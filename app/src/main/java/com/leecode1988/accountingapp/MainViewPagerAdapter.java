@@ -1,16 +1,22 @@
 package com.leecode1988.accountingapp;
 
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
  * author:LeeCode
  * create:2019/2/12 15:05
  */
-public class MainViewPagerAdapter extends FragmentPagerAdapter {
+public class MainViewPagerAdapter extends FragmentStatePagerAdapter {
     private static final String TAG = "MainViewPagerAdapter";
 
     LinkedList<MainFragment> fragments = new LinkedList<>();
@@ -22,10 +28,21 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
     }
 
     private void initFragment() {
+        dates.clear();
+        fragments.clear();
+
         dates = GlobalUtil.getInstance().databaseHelper.getAvailableDate();
+        Log.d(TAG, "----before----");
+        for(String date:dates){
+            Log.d(TAG,date);
+        }
         //如果dates中不包含当天的日期，则放入一个当天的日期
         if (!dates.contains(DateUtil.getFormatterDate())) {
             dates.addLast(DateUtil.getFormatterDate());
+        }
+        Log.d(TAG, "----after----");
+        for(String date:dates){
+            Log.d(TAG,date);
         }
 
         for (String date : dates) {
@@ -39,9 +56,9 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
         return fragments.get(position);
     }
 
-
-    public int getLastIndex() {
-        return fragments.size() - 1;
+    @Override
+    public int getItemPosition(@NonNull Object object) {
+        return PagerAdapter.POSITION_NONE;
     }
 
     @Override
@@ -49,7 +66,13 @@ public class MainViewPagerAdapter extends FragmentPagerAdapter {
         return fragments.size();
     }
 
+    public int getLastIndex() {
+        return fragments.size() - 1;
+    }
+
     public void reload() {
+//        initFragment();
+        Log.d(TAG, "fragment" + fragments.size());
         for (MainFragment fragment : fragments) {
             fragment.reload();
         }

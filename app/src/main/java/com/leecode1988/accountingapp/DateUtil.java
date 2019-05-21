@@ -13,6 +13,7 @@ public class DateUtil {
 
     /**
      * 时间戳转为 HH:mm
+     *
      * @param timeStamp
      * @return String
      */
@@ -25,6 +26,7 @@ public class DateUtil {
 
     /**
      * 获取当前时间 年-月-日
+     *
      * @return String类型
      */
     //Date date->2019-02-09
@@ -35,6 +37,7 @@ public class DateUtil {
 
     /**
      * String类型date转换为Date型
+     *
      * @param date
      * @return
      */
@@ -49,7 +52,10 @@ public class DateUtil {
     }
 
     public static String getWeekDay(String date) {
-        String[] weekdays = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期天"};
+        if (date == null) {
+            return "未知";
+        }
+        String[] weekdays = {"星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六",};
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(strToDate(date));
         int index = calendar.get(Calendar.DAY_OF_WEEK) - 1;
@@ -63,5 +69,10 @@ public class DateUtil {
         int monthsIndex = calendar.get(Calendar.MONTH);
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         return months[monthsIndex] + String.valueOf(day) + "号";
+    }
+
+    public static String getDateYear(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy");
+        return format.format(DateUtil.strToDate(date)) + "年";
     }
 }
