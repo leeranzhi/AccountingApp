@@ -125,6 +125,11 @@ public class MainFragment extends Fragment implements AdapterView.OnItemLongClic
                     String uuid = selectedRecord.getUuid();
                     GlobalUtil.getInstance().databaseHelper.removeRecord(uuid);
                     reload();
+                    if (listViewAdapter.getCount() == 0) {
+                        if (date != DateUtil.getFormatterDate()) {
+
+                        }
+                    }
                     GlobalUtil.getInstance().mainActivity.updateHeader();
                 } else if (which == 1) {
                     //addRecordActivity
