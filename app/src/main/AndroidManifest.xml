@@ -9,9 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeToolbar">
+        <activity android:name=".StatisticsActivity">
+
+        </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/MaterialDrawerTheme.Light.TranslucentStatus">
+            android:theme="@style/AppThemeToolbar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -20,8 +23,8 @@
         </activity>
         <activity
             android:name=".AddRecordActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:label="记一笔"></activity>
+            android:label="记一笔"
+            android:windowSoftInputMode="adjustPan" />
     </application>
 
 </manifest>

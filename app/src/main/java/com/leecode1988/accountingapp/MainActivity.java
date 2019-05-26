@@ -124,11 +124,29 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
                         switch (position) {
+                            case 1:
+                                result.closeDrawer();
+                                break;
+                            case 2:
+                                result.setSelectionAtPosition(1);
+                                result.closeDrawer();
+                                StatisticsActivity.actionStart(MainActivity.this, null);
+                                break;
+                            case 3:
+                                result.closeDrawer();
+                                break;
+                            case 4:
+                                result.closeDrawer();
+                                break;
+                            case 5:
+                                result.closeDrawer();
+                                break;
                             case 6:
                                 ActivityCollector.finishAll();
                             default:
-                                return true;
+                                return false;
                         }
+                        return true;
                     }
                 })
                 .withSavedInstance(savedInstanceState)
@@ -160,7 +178,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
                         //如果点击的事件具有事件标识符则添加新的配置文件
-                        if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTING) {
+                        if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTING_ADD_COUNT) {
                             IProfile newProfile = new ProfileDrawerItem().withNameShown(true).withName("BatMan").withEmail("leeguoqing@foxmail.com").withIcon(R.drawable.ic_drawer_avatar);
                             if (headerResult.getProfiles() != null) {
                                 headerResult.addProfile(newProfile, headerResult.getProfiles().size() - 2);
