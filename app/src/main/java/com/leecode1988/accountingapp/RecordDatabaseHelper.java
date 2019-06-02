@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -90,6 +91,42 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select DISTINCT * from Record where date = ? order by time asc", new String[]{dateStr});
 //        Cursor cursor1=db.query(DB_NAME,null,"where date = ?",new String[]{dateStr},null,null,"order by time");
         if (cursor.moveToFirst()) {
+            do {
+                String uuid = cursor.getString(cursor.getColumnIndex("uuid"));
+                int type = cursor.getInt(cursor.getColumnIndex("type"));
+                String category = cursor.getString(cursor.getColumnIndex("category"));
+                double amount = cursor.getDouble(cursor.getColumnIndex("amount"));
+                String remark = cursor.getString(cursor.getColumnIndex("remark"));
+                String date = cursor.getString(cursor.getColumnIndex("date"));
+                long timeStamp = cursor.getLong(cursor.getColumnIndex("time"));
+                RecordBean record = new RecordBean();
+                record.setUuid(uuid);
+                record.setType(type);
+                record.setCategory(category);
+                record.setAmount(amount);
+                record.setRemark(remark);
+                record.setDate(date);
+                record.setTimeStamp(timeStamp);
+
+                records.add(record);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return records;
+    }
+
+    /**
+     * 查询时间段的账单
+     *
+     * @param dateStrFirst,dataStrLast
+     * @return LinkedList<RecordBean>
+     */
+    public LinkedList<RecordBean> queryRecordsByKey(String dateStrFirst, String dataStrLast) {
+        LinkedList<RecordBean> records = new LinkedList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select DISTINCT * from Record where date>=? AND date<=? order by time asc", new String[]{dateStrFirst, dataStrLast});
+        if (cursor.moveToFirst()) {
+
             do {
                 String uuid = cursor.getString(cursor.getColumnIndex("uuid"));
                 int type = cursor.getInt(cursor.getColumnIndex("type"));

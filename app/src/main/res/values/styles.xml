@@ -18,4 +18,13 @@
 
     </style>
 
+    <style name="AppThemeToolbar.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppThemeToolbar.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppThemeToolbar.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
 </resources>

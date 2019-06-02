@@ -171,8 +171,22 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                         profile2,
                         profile3,
                         new ProfileSettingDrawerItem().withName("添加账户").withDescription("添加一个新的用户").withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_add).actionBar().paddingDp(5).colorRes(R.color.material_drawer_primary_text)).withIdentifier(PROFILE_SETTING_ADD_COUNT),
-                        new ProfileSettingDrawerItem().withName("账户管理").withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(12).withIdentifier(PROFILE_SETTING)
+                        new ProfileSettingDrawerItem().withName("账户管理").withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(PROFILE_SETTING)
                 )
+                .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
+                    @Override
+                    public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
+                        if (profile instanceof IDrawerItem && profile.getIcon() != null) {
+                            AccountCenterActivity.actionStart(MainActivity.this, "");
+                        }
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onProfileImageLongClick(View view, IProfile profile, boolean current) {
+                        return false;
+                    }
+                })
                 .withTextColor(ContextCompat.getColor(this, R.color.material_drawer_dark_primary_text))
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
@@ -185,7 +199,10 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                             } else {
                                 headerResult.addProfiles(newProfile);
                             }
+                        } else if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTING) {
+                            AccountCenterActivity.actionStart(MainActivity.this, "");
                         }
+
                         //如果事件没有被消耗，且应该关闭Drawer，返回false
                         return false;
                     }

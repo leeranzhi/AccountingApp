@@ -3,15 +3,22 @@
     package="com.leecode1988.accountingapp">
 
     <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeToolbar">
-        <activity android:name=".StatisticsActivity">
-
-        </activity>
+        <activity
+            android:name=".AccountCenterActivity"
+            android:label="@string/title_activity_account_center"
+            android:theme="@style/AppThemeToolbar.NoActionBar"></activity>
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppThemeToolbar.NoActionBar" />
+        <activity android:name=".StatisticsActivity" />
         <activity
             android:name=".MainActivity"
             android:theme="@style/AppThemeToolbar">

@@ -6,14 +6,17 @@ import android.view.View;
 import com.github.mikephil.charting.data.ChartData;
 
 /**
- * 图标listView子项的基类
+ * 图表listView子项的基类
  * author:LeeCode
  * create:2019/5/26 23:18
  */
 public abstract class ChartItem {
 
+    //柱状图
     static final int TYPE_BARCHART = 0;
+    //折现图
     static final int TYPE_LINECHART = 1;
+    //饼状图
     static final int TYPE_PIECHART = 2;
 
     ChartData<?> mChartData;

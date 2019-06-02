@@ -25,6 +25,15 @@ public class DateUtil {
     }
 
     /**
+     * 获取当前时间戳
+     *
+     * @return long
+     */
+    public static long getUnixStamp() {
+        return System.currentTimeMillis();
+    }
+
+    /**
      * 获取当前时间 年-月-日
      *
      * @return String类型
@@ -55,7 +64,7 @@ public class DateUtil {
         if (date == null) {
             return "未知";
         }
-        String[] weekdays = {"星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六",};
+        String[] weekdays = {"星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"};
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(strToDate(date));
         int index = calendar.get(Calendar.DAY_OF_WEEK) - 1;
@@ -71,8 +80,44 @@ public class DateUtil {
         return months[monthsIndex] + String.valueOf(day) + "号";
     }
 
+    /**
+     * 获取时间date的年份
+     *
+     * @param date
+     * @return
+     */
     public static String getDateYear(String date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy");
-        return format.format(DateUtil.strToDate(date)) + "年";
+        return format.format(strToDate(date)) + "年";
+    }
+
+
+
+    /**
+     * 获取某月第一天
+     *
+     * @return
+     */
+    public static String getMonthFirstDay(String date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(strToDate(date));
+        int firstDay = calendar.getActualMinimum(Calendar.DAY_OF_MONTH);
+        calendar.set(Calendar.DAY_OF_MONTH, firstDay);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(calendar.getTime());
+    }
+
+    /**
+     * 获取某月最后一天
+     *
+     * @return
+     */
+    public static String getMonthLastDay(String date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(strToDate(date));
+        int firstDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+        calendar.set(Calendar.DAY_OF_MONTH, firstDay);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(calendar.getTime());
     }
 }

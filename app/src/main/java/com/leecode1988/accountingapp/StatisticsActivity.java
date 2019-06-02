@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,12 +30,15 @@ import com.leecode1988.accountingapp.listviewitems.LineChartItem;
 import com.leecode1988.accountingapp.listviewitems.PieChartItem;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 public class StatisticsActivity extends BaseActivity {
+    private static final String TAG = "StatisticsActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,12 @@ public class StatisticsActivity extends BaseActivity {
         setTitle("账目统计");
         ListView listView = findViewById(R.id.list_view);
 
+        String firstDay = DateUtil.getMonthFirstDay(DateUtil.getFormatterDate());
+        String lastDay = DateUtil.getMonthLastDay(DateUtil.getFormatterDate());
+        Log.d(TAG, "------>"+lastDay);
+        LinkedList<RecordBean> recordList = GlobalUtil.getInstance().databaseHelper.queryRecordsByKey(firstDay,lastDay);
+        Log.d(TAG,  "------>" + recordList.size());
+
         ArrayList<ChartItem> list = new ArrayList<>();
         list.add(new LineChartItem(generateDataLine(1), getApplicationContext()));
         list.add(new BarChartItem(generateDataBar(2), getApplicationContext()));
@@ -54,7 +64,17 @@ public class StatisticsActivity extends BaseActivity {
         listView.setAdapter(adapter);
     }
 
+    private void initView() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
+    }
+
     private class ChartAdapter extends ArrayAdapter<ChartItem> {
+
 
         ChartAdapter(@NonNull Context context, List<ChartItem> objects) {
             super(context, 0, objects);
@@ -142,15 +162,6 @@ public class StatisticsActivity extends BaseActivity {
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
 
         return new PieData(d);
-    }
-
-    private void initView() {
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-        }
     }
 
     public static void actionStart(Context context, String data) {
