@@ -7,6 +7,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -177,6 +178,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     @Override
                     public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
                         if (profile instanceof IDrawerItem && profile.getIcon() != null) {
+                            String isLogin = (String) SPUtil.get("userToken", "");
+                            if (TextUtils.isEmpty(isLogin)) {
+                                result.closeDrawer();
+                                LoginActivity.actionStart(MainActivity.this, "");
+                                return true;
+                            }
                             AccountCenterActivity.actionStart(MainActivity.this, "");
                         }
                         return false;
@@ -200,6 +207,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                                 headerResult.addProfiles(newProfile);
                             }
                         } else if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTING) {
+                            String isLogin = (String) SPUtil.get("userToken", "");
+                            if (TextUtils.isEmpty(isLogin)) {
+                                result.closeDrawer();
+                                LoginActivity.actionStart(MainActivity.this, "");
+                                return true;
+                            }
                             AccountCenterActivity.actionStart(MainActivity.this, "");
                         }
 

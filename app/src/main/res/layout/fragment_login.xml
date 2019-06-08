@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,18 +13,19 @@
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
-        <EditText
+        <com.leecode1988.accountingapp.customview.FixedEditText
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_margin="30dp"
-            android:background="#DFDFDF"
+            android:background="@drawable/edit_bg"
             android:ems="11"
             android:inputType="number"
-            android:text="    手机号"
+            android:paddingLeft="15dp"
+            android:singleLine="true"
             android:textColor="#696969"
-            android:textSize="15sp" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -37,15 +39,17 @@
             android:layout_height="match_parent"
             android:layout_weight="0.6">
 
-            <EditText
+            <com.leecode1988.accountingapp.customview.FixedEditText
+                android:id="@+id/phone_key"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginLeft="30dp"
                 android:layout_marginTop="10dp"
-                android:background="#DFDFDF"
-                android:text="    验证码"
+                android:background="@drawable/edit_bg"
+                android:paddingLeft="15dp"
+                android:singleLine="true"
                 android:textColor="#696969"
-                android:textSize="15sp" />
+                android:textSize="18sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -59,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="10dp"
-                android:background="#DFDFDF"
+                android:background="@drawable/edit_bg"
                 android:text="获取验证码"
                 android:textColor="@android:color/white" />
         </LinearLayout>
@@ -74,13 +78,14 @@
         <Button
             android:id="@+id/submit"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="50dp"
             android:layout_gravity="bottom"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:textSize="15sp"
+            android:background="@drawable/login_bt_bg"
+            android:text="登录"
             android:textColor="@android:color/white"
-            android:text="确定" />
+            android:textSize="18sp" />
     </LinearLayout>
 
 </LinearLayout>

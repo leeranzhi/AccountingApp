@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import static android.content.Context.MODE_PRIVATE;
 
 /**
- * 本地SP存储
+ * 本地SP存储工具类
  * author:LeeCode
  * create:2019/6/2 16:31
  */
@@ -14,7 +14,7 @@ public class SPUtil {
     private static final int MODE = MODE_PRIVATE;
     private static final String spName = "accountData";
     private static SPUtil spUtil;
-    public SharedPreferences sharedPreferences;
+    private SharedPreferences sharedPreferences;
 
     private SPUtil() {
         sharedPreferences = MyApplication.getContext().getSharedPreferences(spName, MODE);
@@ -81,12 +81,15 @@ public class SPUtil {
         return null;
     }
 
-    public static void clear() {
+    /**
+     * 清除所有数据
+     */
+    public static void clearAll() {
         clear(MyApplication.getContext(), spName);
     }
 
     /**
-     * 清除所有数据
+     * 清除指定文件的数据
      *
      * @param context
      * @param fileName

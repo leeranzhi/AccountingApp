@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -40,23 +41,63 @@ import androidx.annotation.Nullable;
 public class StatisticsActivity extends BaseActivity {
     private static final String TAG = "StatisticsActivity";
 
+    private TextView balance_text, balance_amount_text;
+    private TextView income_text, expense_text;
+    private String lastDay;
+    private String firstDay;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
         initView();
+    }
+
+    private void initView() {
+        initToolbar();
 
         setTitle("账目统计");
         ListView listView = findViewById(R.id.list_view);
 
-        String firstDay = DateUtil.getMonthFirstDay(DateUtil.getFormatterDate());
-        String lastDay = DateUtil.getMonthLastDay(DateUtil.getFormatterDate());
-        Log.d(TAG, "------>"+lastDay);
-        LinkedList<RecordBean> recordList = GlobalUtil.getInstance().databaseHelper.queryRecordsByKey(firstDay,lastDay);
-        Log.d(TAG,  "------>" + recordList.size());
+        balance_text = findViewById(R.id.balance_text);
+        balance_amount_text = findViewById(R.id.balance_amount_text);
+        income_text = findViewById(R.id.income_text);
+        expense_text = findViewById(R.id.expense_text);
+
+        //获取当前时间所在月份的起始结束范围
+        firstDay = DateUtil.getMonthFirstDay(DateUtil.getFormatterDate());
+        lastDay = DateUtil.getMonthLastDay(DateUtil.getFormatterDate());
+        Log.d(TAG, "------>" + lastDay);
+        //查询范围内的账单
+        LinkedList<RecordBean> recordList = GlobalUtil.getInstance().databaseHelper.queryRecordsByKey(firstDay, lastDay);
+        Log.d(TAG, "------>" + recordList.size());
+
+        String[] split = firstDay.split("-");
+        balance_text.setText(split[1] + "月余额");
+        double totalCost = 0;
+        double totalInCome = 0;
+        for (RecordBean record : recordList) {
+            if (record.getType() == 1) {
+                totalCost += record.getAmount();
+            } else {
+                totalInCome += record.getAmount();
+            }
+        }
+        expense_text.setText("¥ " + String.valueOf(totalCost));
+        income_text.setText("¥ " + String.valueOf(totalInCome));
+        //计算结果保留小数点后一位
+        // 0.0001->0.0
+        // 11.223->11.2
+        double balanceAmount = Double.valueOf(NumberUtil.formatDouble(totalInCome - totalCost));
+        Log.d(TAG, "" + balanceAmount);
+        if (balanceAmount >= 0.0) {
+            balance_amount_text.setText("¥ " + balanceAmount);
+        } else {
+            balance_amount_text.setText("-¥ " + -balanceAmount);
+        }
 
         ArrayList<ChartItem> list = new ArrayList<>();
-        list.add(new LineChartItem(generateDataLine(1), getApplicationContext()));
+        list.add(new LineChartItem(generateDataLine(recordList), getApplicationContext()));
         list.add(new BarChartItem(generateDataBar(2), getApplicationContext()));
         list.add(new PieChartItem(generateDataPie(), getApplicationContext()));
 
@@ -64,7 +105,7 @@ public class StatisticsActivity extends BaseActivity {
         listView.setAdapter(adapter);
     }
 
-    private void initView() {
+    private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
@@ -102,18 +143,31 @@ public class StatisticsActivity extends BaseActivity {
     /**
      * 生成折线图
      *
-     * @param cnt
+     * @param recordList
      * @return
      */
-    private LineData generateDataLine(int cnt) {
+    private LineData generateDataLine(LinkedList<RecordBean> recordList) {
         ArrayList<Entry> values = new ArrayList<>();
+
+        for (int i = 1; i <= Integer.valueOf(lastDay.split("-")[2]); i++) {
+            double amount = 0.0;
+            for (int j = 0; j < recordList.size(); j++) {
+                if (Integer.valueOf(recordList.get(j).getDate().split("-")[2]) != i) {
+                    
+                }
+            }
+            values.add(new Entry(i, (float) amount));
+
+        }
+
 
         for (int i = 0; i < 12; i++) {
             values.add(new Entry(i, (int) (Math.random() * 65) + 40));
         }
 
+
         //设置折线图的属性
-        LineDataSet d1 = new LineDataSet(values, "New DataSet" + cnt + ",(1)");
+        LineDataSet d1 = new LineDataSet(values, "支出折线图");
         d1.setLineWidth(2.5f);
         d1.setCircleRadius(4.5f);
         d1.setHighLightColor(Color.rgb(244, 117, 117));
