@@ -25,11 +25,11 @@ public class PieChartItem extends ChartItem {
     private final Typeface mTf;
     private final SpannableString mCenterText;
 
-    public PieChartItem(ChartData<?> cd, Context context) {
+    public PieChartItem(ChartData<?> cd, Context context,String centerText) {
         super(cd);
 
         mTf = Typeface.createFromAsset(context.getAssets(), "OpenSans-Regular.ttf");
-        mCenterText = generateCenterText();
+        mCenterText = generateCenterText(centerText);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class PieChartItem extends ChartItem {
 
         mChartData.setValueFormatter(new PercentFormatter());
         mChartData.setValueTypeface(mTf);
-        mChartData.setValueTextSize(11f);
+        mChartData.setValueTextSize(9f);
         mChartData.setValueTextColor(Color.WHITE);
         //设置数据
         holder.chart.setData((PieData) mChartData);
@@ -91,14 +91,12 @@ public class PieChartItem extends ChartItem {
      *
      * @return
      */
-    private SpannableString generateCenterText() {
-        SpannableString s = new SpannableString("MPAndroidChart\ncreated by\nPhilipp Jahoda");
-        s.setSpan(new RelativeSizeSpan(1.6f), 0, 14, 0);
-        s.setSpan(new ForegroundColorSpan(ColorTemplate.VORDIPLOM_COLORS[0]), 0, 14, 0);
-        s.setSpan(new RelativeSizeSpan(.9f), 14, 25, 0);
-        s.setSpan(new ForegroundColorSpan(Color.GRAY), 14, 25, 0);
-        s.setSpan(new RelativeSizeSpan(1.4f), 25, s.length(), 0);
-        s.setSpan(new ForegroundColorSpan(ColorTemplate.getHoloBlue()), 25, s.length(), 0);
+    private SpannableString generateCenterText(String text) {
+        SpannableString s = new SpannableString(text);
+
+        s.setSpan(new ForegroundColorSpan(ColorTemplate.VORDIPLOM_COLORS[3]), 0, s.length(), 0);
+        s.setSpan(new RelativeSizeSpan(2.0f), 0, s.length(), 0);
+
         return s;
     }
 

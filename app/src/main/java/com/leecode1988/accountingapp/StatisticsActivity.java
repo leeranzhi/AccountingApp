@@ -31,7 +31,6 @@ import com.leecode1988.accountingapp.listviewitems.LineChartItem;
 import com.leecode1988.accountingapp.listviewitems.PieChartItem;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -74,8 +73,8 @@ public class StatisticsActivity extends BaseActivity {
 
         String[] split = firstDay.split("-");
         balance_text.setText(split[1] + "月余额");
-        double totalCost = 0;
-        double totalInCome = 0;
+        double totalCost = 0.0;
+        double totalInCome = 0.0;
         for (RecordBean record : recordList) {
             if (record.getType() == 1) {
                 totalCost += record.getAmount();
@@ -85,9 +84,9 @@ public class StatisticsActivity extends BaseActivity {
         }
         expense_text.setText("¥ " + String.valueOf(totalCost));
         income_text.setText("¥ " + String.valueOf(totalInCome));
-        //计算结果保留小数点后一位
-        // 0.0001->0.0
-        // 11.223->11.2
+        //计算结果保留小数点后两位
+        // 0.0001->0.00
+        // 11.223->11.22
         double balanceAmount = Double.valueOf(NumberUtil.formatDouble(totalInCome - totalCost));
         Log.d(TAG, "" + balanceAmount);
         if (balanceAmount >= 0.0) {
@@ -98,8 +97,8 @@ public class StatisticsActivity extends BaseActivity {
 
         ArrayList<ChartItem> list = new ArrayList<>();
         list.add(new LineChartItem(generateDataLine(recordList), getApplicationContext()));
-        list.add(new BarChartItem(generateDataBar(2), getApplicationContext()));
-        list.add(new PieChartItem(generateDataPie(), getApplicationContext()));
+        list.add(new BarChartItem(generateDataBar(recordList), getApplicationContext()));
+        list.add(new PieChartItem(generateDataPie(recordList), getApplicationContext(), split[1] + "月\n总览"));
 
         ChartAdapter adapter = new ChartAdapter(getApplicationContext(), list);
         listView.setAdapter(adapter);
@@ -149,20 +148,30 @@ public class StatisticsActivity extends BaseActivity {
     private LineData generateDataLine(LinkedList<RecordBean> recordList) {
         ArrayList<Entry> values = new ArrayList<>();
 
+        //初始化开始查找位置
+        int j = 0;
         for (int i = 1; i <= Integer.valueOf(lastDay.split("-")[2]); i++) {
             double amount = 0.0;
-            for (int j = 0; j < recordList.size(); j++) {
-                if (Integer.valueOf(recordList.get(j).getDate().split("-")[2]) != i) {
-                    
+            while (j < recordList.size()) {
+                if (Integer.valueOf(recordList.get(j).getDate().split("-")[2]) == i) {
+                    if (recordList.get(j).getType() == 1) {
+                        amount += recordList.get(j).getAmount();
+                    }
+                    j++;
+                }
+                //如果j>i,则直接结束内层循环
+                //接着将amount添加到values, 从下一个i重新开始找
+                else if (Integer.valueOf(recordList.get(j).getDate().split("-")[2]) > i) {
+                    break;
+                }
+                //事实上不会走这个分支
+                else {
+                    j++;
+                    break;
                 }
             }
+            Log.d(TAG, "" + (float) amount);
             values.add(new Entry(i, (float) amount));
-
-        }
-
-
-        for (int i = 0; i < 12; i++) {
-            values.add(new Entry(i, (int) (Math.random() * 65) + 40));
         }
 
 
@@ -171,7 +180,7 @@ public class StatisticsActivity extends BaseActivity {
         d1.setLineWidth(2.5f);
         d1.setCircleRadius(4.5f);
         d1.setHighLightColor(Color.rgb(244, 117, 117));
-        d1.setDrawValues(false);
+        d1.setDrawValues(true);
 
 
         ArrayList<ILineDataSet> sets = new ArrayList<>();
@@ -184,16 +193,29 @@ public class StatisticsActivity extends BaseActivity {
     /**
      * 生成条形图
      *
-     * @param cnt
+     * @param recordList
      * @return
      */
-    private BarData generateDataBar(int cnt) {
+    private BarData generateDataBar(LinkedList<RecordBean> recordList) {
         ArrayList<BarEntry> entries = new ArrayList<>();
-        for (int i = 0; i < 12; i++) {
-            entries.add(new BarEntry(i, (int) (Math.random() * 70) + 30));
+
+        for (int i = 1; i <= Integer.valueOf(lastDay.split("-")[2]); i++) {
+            double amount = 0.0;
+            for (int j = 0; j < recordList.size(); j++) {
+                if (Integer.valueOf(recordList.get(j).getDate().split("-")[2]) == i) {
+                    if (recordList.get(j).getType() == 1) {
+                        amount += recordList.get(j).getAmount();
+                    }
+                }
+                //如果j>i,则直接结束内层循环，从下一个i重新开始找
+                else if (Integer.valueOf(recordList.get(j).getDate().split("-")[2]) > i) {
+                    break;
+                }
+            }
+            entries.add(new BarEntry(i, (float) amount));
         }
 
-        BarDataSet d = new BarDataSet(entries, "New DataSet" + cnt);
+        BarDataSet d = new BarDataSet(entries, "支出柱状图");
         d.setColors(ColorTemplate.VORDIPLOM_COLORS);
         d.setHighLightAlpha(255);
 
@@ -205,15 +227,27 @@ public class StatisticsActivity extends BaseActivity {
     /**
      * 生成饼状图
      */
-    private PieData generateDataPie() {
+    private PieData generateDataPie(LinkedList<RecordBean> recordList) {
         ArrayList<PieEntry> entries = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            entries.add(new PieEntry((float) ((Math.random() * 70) + 30), "Quarter" + (i + 1)));
+
+        String[] title = GlobalUtil.getCostTitle();
+        for (int i = 0; i < title.length; i++) {
+            double amount = 0.0;
+            for (int j = 0; j < recordList.size(); j++) {
+                if (recordList.get(j).getCategory().equals(title[i])) {
+                    if (recordList.get(j).getType() == 1) {
+                        amount += recordList.get(j).getAmount();
+                    }
+                }
+            }
+            if (amount != 0.0) {
+                entries.add(new PieEntry((float) amount, title[i]));
+            }
         }
 
         PieDataSet d = new PieDataSet(entries, "");
         d.setSliceSpace(2f);
-        d.setColors(ColorTemplate.VORDIPLOM_COLORS);
+        d.setColors(ColorTemplate.MATERIAL_COLORS);
 
         return new PieData(d);
     }

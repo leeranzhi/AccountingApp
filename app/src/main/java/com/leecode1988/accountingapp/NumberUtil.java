@@ -7,7 +7,7 @@ package com.leecode1988.accountingapp;
  */
 public class NumberUtil {
 
-    //保留double数据小数点后一位
+    //保留double数据小数点后两位
     public static String formatDouble(double number) {
         return String.format("%.2f", number);
     }

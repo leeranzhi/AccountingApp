@@ -124,7 +124,7 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
     public LinkedList<RecordBean> queryRecordsByKey(String dateStrFirst, String dataStrLast) {
         LinkedList<RecordBean> records = new LinkedList<>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select DISTINCT * from Record where date>=? AND date<=? order by time asc", new String[]{dateStrFirst, dataStrLast});
+        Cursor cursor = db.rawQuery("select DISTINCT * from Record where date>=? AND date<=? order by date asc", new String[]{dateStrFirst, dataStrLast});
         if (cursor.moveToFirst()) {
 
             do {

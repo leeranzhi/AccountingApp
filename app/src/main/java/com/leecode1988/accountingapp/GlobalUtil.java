@@ -27,7 +27,12 @@ public class GlobalUtil {
             R.drawable.ic_category_mobile, R.drawable.ic_category_water, R.drawable.ic_category_hair,
             R.drawable.ic_category_play, R.drawable.ic_category_red, R.drawable.ic_category_love,
             R.drawable.ic_category_hospital, R.drawable.ic_category_other, R.drawable.ic_category_add};
-//    private static int[] costIconResBlack = {R.drawable.ic_category_food, R.drawable.ic_category_shopping,
+
+    public static String[] getCostTitle() {
+        return costTitle;
+    }
+
+    //    private static int[] costIconResBlack = {R.drawable.ic_category_food, R.drawable.ic_category_shopping,
 //            R.drawable.ic_category_house, R.drawable.ic_category_car, R.drawable.ic_category_fruit,
 //            R.drawable.ic_category_mobile, R.drawable.ic_category_water, R.drawable.ic_category_hair,
 //            R.drawable.ic_category_play, R.drawable.ic_category_red, R.drawable.ic_category_love,
