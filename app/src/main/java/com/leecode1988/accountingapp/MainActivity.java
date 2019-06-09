@@ -131,9 +131,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                             case 2:
                                 result.setSelectionAtPosition(1);
                                 result.closeDrawer();
-                                StatisticsActivity.actionStart(MainActivity.this, null);
+                                StatisticsActivity.actionStart(MainActivity.this, "");
                                 break;
                             case 3:
+                                result.setSelectionAtPosition(1);
+                                result.closeDrawer();
+                                AnnualStatisticsActivity.actionStart(MainActivity.this,"");
                                 result.closeDrawer();
                                 break;
                             case 4:

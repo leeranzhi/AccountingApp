@@ -6,6 +6,7 @@ import android.content.Context;
 import cn.bmob.v3.Bmob;
 
 /**
+ * App全局设置
  * author:LeeCode
  * create:2019/6/2 16:40
  */

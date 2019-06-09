@@ -92,7 +92,6 @@ public class DateUtil {
     }
 
 
-
     /**
      * 获取某月第一天
      *
@@ -117,6 +116,29 @@ public class DateUtil {
         calendar.setTime(strToDate(date));
         int firstDay = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
         calendar.set(Calendar.DAY_OF_MONTH, firstDay);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(calendar.getTime());
+    }
+
+    /**
+     * 获取某年的第一天
+     *
+     * @param date
+     * @return
+     */
+    public static String getYearFirstDay(String date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.clear();
+        calendar.set(Calendar.YEAR, Integer.valueOf(date.split("-")[0]));
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        return format.format(calendar.getTime());
+    }
+
+    public static String getYearLastDay(String date) {
+        Calendar calendar=Calendar.getInstance();
+        calendar.clear();
+        calendar.set(Calendar.YEAR,Integer.valueOf(date.split("-")[0]));
+        calendar.roll(Calendar.DAY_OF_YEAR,-1);
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         return format.format(calendar.getTime());
     }
