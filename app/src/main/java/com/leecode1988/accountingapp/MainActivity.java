@@ -59,6 +59,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        setTitle("首页");
         GlobalUtil.getInstance().setContext(getApplicationContext());
         GlobalUtil.getInstance().mainActivity = this;
 
@@ -103,8 +104,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
      */
     private void initDrawer(Bundle savedInstanceState) {
         profile = new ProfileDrawerItem().withName("Lee Code").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
-        profile2 = new ProfileDrawerItem().withName("Lee Code2").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
-        profile3 = new ProfileDrawerItem().withName("Lee Code3").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
+//        profile2 = new ProfileDrawerItem().withName("Lee Code2").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
+//        profile3 = new ProfileDrawerItem().withName("Lee Code3").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
         //创建AccountHeader
         buildHeader(false, savedInstanceState);
 
@@ -172,11 +173,12 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 .withCompactStyle(compat)
                 .addProfiles(
                         profile,
-                        profile2,
-                        profile3,
-                        new ProfileSettingDrawerItem().withName("添加账户").withDescription("添加一个新的用户").withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_add).actionBar().paddingDp(5).colorRes(R.color.material_drawer_primary_text)).withIdentifier(PROFILE_SETTING_ADD_COUNT),
+//                        profile2,
+//                        profile3,
+//                        new ProfileSettingDrawerItem().withName("添加账户").withDescription("添加一个新的用户").withIcon(new IconicsDrawable(this, GoogleMaterial.Icon.gmd_add).actionBar().paddingDp(5).colorRes(R.color.material_drawer_primary_text)).withIdentifier(PROFILE_SETTING_ADD_COUNT),
                         new ProfileSettingDrawerItem().withName("账户管理").withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(PROFILE_SETTING)
                 )
+                //头像监听
                 .withOnAccountHeaderProfileImageListener(new AccountHeader.OnAccountHeaderProfileImageListener() {
                     @Override
                     public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
@@ -198,17 +200,18 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     }
                 })
                 .withTextColor(ContextCompat.getColor(this, R.color.material_drawer_dark_primary_text))
+                //账户监听
                 .withOnAccountHeaderListener(new AccountHeader.OnAccountHeaderListener() {
                     @Override
                     public boolean onProfileChanged(View view, IProfile profile, boolean currentProfile) {
                         //如果点击的事件具有事件标识符则添加新的配置文件
                         if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTING_ADD_COUNT) {
-                            IProfile newProfile = new ProfileDrawerItem().withNameShown(true).withName("BatMan").withEmail("leeguoqing@foxmail.com").withIcon(R.drawable.ic_drawer_avatar);
-                            if (headerResult.getProfiles() != null) {
-                                headerResult.addProfile(newProfile, headerResult.getProfiles().size() - 2);
-                            } else {
-                                headerResult.addProfiles(newProfile);
-                            }
+//                            IProfile newProfile = new ProfileDrawerItem().withNameShown(true).withName("BatMan").withEmail("leeguoqing@foxmail.com").withIcon(R.drawable.ic_drawer_avatar);
+//                            if (headerResult.getProfiles() != null) {
+//                                headerResult.addProfile(newProfile, headerResult.getProfiles().size() - 2);
+//                            } else {
+//                                headerResult.addProfiles(newProfile);
+//                            }
                         } else if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTING) {
                             String isLogin = (String) SPUtil.get("userToken", "");
                             if (TextUtils.isEmpty(isLogin)) {

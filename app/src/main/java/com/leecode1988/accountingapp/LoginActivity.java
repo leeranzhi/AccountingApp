@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -13,7 +16,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.List;
 
 import androidx.annotation.RequiresApi;
 import cn.bmob.v3.BmobSMS;
@@ -28,6 +34,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private EditText editPhone, editPhoneKey;
     private Button btLogin;
     private Button btSend;
+    //判断是手机还是邮箱
+    private boolean isPhone = true;
+    TextView changedMode;
+    private List<Fragment> fragments;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,36 +49,41 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void initView() {
         initToolbar();
-        editPhone = findViewById(R.id.phone);
-        editPhoneKey = findViewById(R.id.phone_key);
-        btLogin = findViewById(R.id.submit);
-        btSend = findViewById(R.id.send);
-        editPhone.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        fragments.add(new LoginFragment());
+        replaceFragment(fragments.get(0));
 
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (s.toString().trim().length() == 11 && RegularUtil.matchPhone(s.toString().trim())) {
-                    btSend.setBackground(getResources().getDrawable(R.drawable.login_bt_bg));
-                    btSend.setClickable(true);
-                } else {
-                    btSend.setBackground(getResources().getDrawable(R.drawable.edit_bg));
-                    btSend.setClickable(false);
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-        btSend.setOnClickListener(this);
-        btLogin.setOnClickListener(this);
-        btSend.setClickable(false);
+        changedMode = findViewById(R.id.text_changed_mode);
+//        editPhone = findViewById(R.id.phone);
+//        editPhoneKey = findViewById(R.id.phone_key);
+//        btLogin = findViewById(R.id.submit);
+//        btSend = findViewById(R.id.send);
+//        editPhone.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//
+//            }
+//
+//            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                if (s.toString().trim().length() == 11 && RegularUtil.matchPhone(s.toString().trim())) {
+//                    btSend.setBackground(getResources().getDrawable(R.drawable.login_bt_bg));
+//                    btSend.setClickable(true);
+//                } else {
+//                    btSend.setBackground(getResources().getDrawable(R.drawable.edit_bg));
+//                    btSend.setClickable(false);
+//                }
+//            }
+//
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//
+//            }
+//        });
+//        btSend.setOnClickListener(this);
+//        btLogin.setOnClickListener(this);
+//        btSend.setClickable(false);
+        changedMode.setOnClickListener(this);
     }
 
     private void initToolbar() {
@@ -102,7 +117,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     Toast.makeText(LoginActivity.this, "请输入手机号码", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                BmobSMS.requestSMSCode(phone, "", new QueryListener<Integer>() {
+                BmobSMS.requestSMSCode(phone, "记账小助手", new QueryListener<Integer>() {
                     @Override
                     public void done(Integer integer, BmobException e) {
                         if (e == null) {
@@ -147,8 +162,48 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 });
                 break;
             }
+            case R.id.text_changed_mode:
+                if (!isPhone) {
+                    replaceFragment(fragments.get(0));
+                } else {
+                    if (fragments.get(1) == null) {
+                        fragments.add(new AnotherLoginFragment());
+                    }
+                    replaceFragment(fragments.get(1));
+                }
+                break;
             default:
                 break;
         }
+    }
+
+    /**
+     * 动态替换登录碎片
+     *
+     * @param fragment
+     */
+    private void replaceFragment(Fragment fragment) {
+        if (fragment == null) {
+            fragment = fragments.get(0);
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.fragment_login, fragment);
+        if (fragment instanceof AnotherLoginFragment) {
+            if (isPhone) {
+                isPhone = false;
+            }
+            //添加至返回栈
+            transaction.addToBackStack(null);
+            changedMode.setVisibility(View.GONE);
+        }
+
+        if (fragment instanceof LoginFragment) {
+            if (!isPhone) {
+                isPhone = true;
+            }
+        }
+        transaction.commit();
     }
 }

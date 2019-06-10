@@ -9,18 +9,17 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_marginTop="20dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="20dp">
 
         <com.leecode1988.accountingapp.customview.FixedEditText
-            android:id="@+id/phone"
+            android:id="@+id/edit_email"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_margin="30dp"
             android:background="@drawable/edit_bg"
             android:ems="11"
-            android:inputType="number"
+            android:inputType="textEmailAddress"
             android:paddingLeft="15dp"
             android:singleLine="true"
             android:textColor="#696969"
@@ -33,41 +32,21 @@
         android:orientation="horizontal"
         android:weightSum="1">
 
-        <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.6">
 
-            <com.leecode1988.accountingapp.customview.FixedEditText
-                android:id="@+id/phone_key"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/edit_bg"
-                android:paddingLeft="15dp"
-                android:singleLine="true"
-                android:textColor="#696969"
-                android:textSize="18sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="60dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.3">
-
-            <Button
-                android:id="@+id/send"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/edit_bg"
-                android:text="获取验证码"
-                android:textColor="@android:color/white" />
-        </LinearLayout>
-
+        <com.leecode1988.accountingapp.customview.FixedEditText
+            android:id="@+id/edit_password"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"
+            android:background="@drawable/edit_bg"
+            android:paddingLeft="15dp"
+            android:singleLine="true"
+            android:textColor="#696969"
+            android:textSize="18sp" />
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -75,12 +54,25 @@
         android:layout_marginTop="20dp">
 
         <Button
-            android:id="@+id/submit"
-            android:layout_width="match_parent"
+            android:id="@+id/bt_sign_up"
+            android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
+            android:layout_weight="1"
+            android:background="@drawable/login_bt_bg"
+            android:text="注册"
+            android:textColor="@android:color/white"
+            android:textSize="18sp" />
+
+        <Button
+            android:id="@+id/bt_login"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_gravity="bottom"
+            android:layout_marginRight="30dp"
+            android:layout_weight="1"
             android:background="@drawable/login_bt_bg"
             android:text="登录"
             android:textColor="@android:color/white"
