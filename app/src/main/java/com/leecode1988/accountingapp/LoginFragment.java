@@ -27,7 +27,7 @@ import cn.bmob.v3.listener.QueryListener;
 /**
  * 登录界面Fragment
  */
-public class LoginFragment extends Fragment implements View.OnClickListener{
+public class LoginFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "LoginFragment";
     private View view;
     private EditText editPhone, editPhoneKey;
@@ -130,7 +130,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener{
                             //保存至本地
                             SPUtil.save("userToken", bmobUser.getSessionToken());
                             Log.d(TAG, "----->" + bmobUser.getSessionToken());
-                            AccountCenterActivity.actionStart(getContext(), "");
+                            AccountCenterActivity.actionStart(getContext(), bmobUser);
                             getActivity().finish();
                         } else {
                             Toast.makeText(getContext(), "登录失败" + e.getErrorCode() + "-" + e.getMessage(), Toast.LENGTH_SHORT).show();

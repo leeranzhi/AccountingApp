@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.RequiresApi;
@@ -36,8 +37,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private Button btSend;
     //判断是手机还是邮箱
     private boolean isPhone = true;
+
     TextView changedMode;
-    private List<Fragment> fragments;
+    private List<Fragment> fragments = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +52,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private void initView() {
         initToolbar();
         fragments.add(new LoginFragment());
-        replaceFragment(fragments.get(0));
+        fragments.add(new AnotherLoginFragment());
 
+        replaceFragment(fragments.get(0));
         changedMode = findViewById(R.id.text_changed_mode);
 //        editPhone = findViewById(R.id.phone);
 //        editPhoneKey = findViewById(R.id.phone_key);
@@ -153,7 +156,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             //保存至本地
                             SPUtil.save("userToken", bmobUser.getSessionToken());
                             Log.d(TAG, "----->" + bmobUser.getSessionToken());
-                            AccountCenterActivity.actionStart(LoginActivity.this, "");
+                            AccountCenterActivity.actionStart(LoginActivity.this, bmobUser);
                             finish();
                         } else {
                             Toast.makeText(LoginActivity.this, "登录失败" + e.getErrorCode() + "-" + e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -166,9 +169,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (!isPhone) {
                     replaceFragment(fragments.get(0));
                 } else {
-                    if (fragments.get(1) == null) {
-                        fragments.add(new AnotherLoginFragment());
-                    }
                     replaceFragment(fragments.get(1));
                 }
                 break;
@@ -183,9 +183,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * @param fragment
      */
     private void replaceFragment(Fragment fragment) {
-        if (fragment == null) {
-            fragment = fragments.get(0);
-        }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
@@ -194,9 +191,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             if (isPhone) {
                 isPhone = false;
             }
-            //添加至返回栈
-            transaction.addToBackStack(null);
-            changedMode.setVisibility(View.GONE);
         }
 
         if (fragment instanceof LoginFragment) {

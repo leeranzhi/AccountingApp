@@ -16,7 +16,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:layout_marginTop="16dp"
             android:background="@android:color/white">
 
@@ -54,7 +54,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:background="@android:color/white">
 
             <TextView
@@ -91,15 +91,15 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="80dp"
             android:background="@android:color/white">
 
             <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:layout_width="match_parent"
                 android:text="个性签名"
                 android:textColor="@color/md_black_1000"
                 android:textSize="15sp" />
@@ -122,6 +122,15 @@
                 android:src="@drawable/ic_right_arrow" />
         </LinearLayout>
 
-
+        <Button
+            android:id="@+id/bt_login_out"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="80dp"
+            android:background="@drawable/login_bt_bg"
+            android:text="退出登录" />
     </LinearLayout>
 </RelativeLayout>
