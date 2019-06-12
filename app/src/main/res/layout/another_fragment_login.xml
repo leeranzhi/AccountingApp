@@ -42,6 +42,7 @@
             android:layout_marginRight="30dp"
             android:background="@drawable/edit_bg"
             android:paddingLeft="15dp"
+            android:inputType="textPassword"
             android:singleLine="true"
             android:textColor="#696969"
             android:textSize="18sp" />

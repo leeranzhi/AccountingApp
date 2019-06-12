@@ -24,5 +24,18 @@ public class RegularUtil {
         return m.matches();
     }
 
+    /**
+     * Email匹配
+     * @param email
+     * @return
+     */
+    public static boolean matchEmail(String email) {
+        String pattern = "\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14}";
+
+        Pattern r = Pattern.compile(pattern);
+        Matcher m = r.matcher(email);
+        return m.matches();
+    }
+
 }
 

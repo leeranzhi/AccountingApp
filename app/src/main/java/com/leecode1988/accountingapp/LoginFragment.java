@@ -39,9 +39,9 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_login, container, false);
         FixedEditText phone = view.findViewById(R.id.phone);
-        phone.setFixedText("手机号");
+        phone.setFixedText("手机号 ");
         FixedEditText phoneKey = view.findViewById(R.id.phone_key);
-        phoneKey.setFixedText("验证码");
+        phoneKey.setFixedText("验证码 ");
         return view;
     }
 
@@ -122,15 +122,16 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
                     Toast.makeText(getContext(), "请输入验证码", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                BmobUser.signOrLoginByMobilePhone(phone, code, new LogInListener<BmobUser>() {
+                //注册或者登录，如果注册过则直接登录
+                BmobUser.signOrLoginByMobilePhone(phone, code, new LogInListener<UserBean>() {
                     @Override
-                    public void done(BmobUser bmobUser, BmobException e) {
+                    public void done(UserBean user, BmobException e) {
                         if (e == null) {
-                            Toast.makeText(getContext(), "登录成功" + bmobUser.getUsername(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "登录成功" + user.getUsername(), Toast.LENGTH_SHORT).show();
                             //保存至本地
-                            SPUtil.save("userToken", bmobUser.getSessionToken());
-                            Log.d(TAG, "----->" + bmobUser.getSessionToken());
-                            AccountCenterActivity.actionStart(getContext(), bmobUser);
+                            SPUtil.save("userToken", user.getSessionToken());
+                            Log.d(TAG, "----->" + user.getSessionToken());
+                            AccountCenterActivity.actionStart(getContext(), user);
                             getActivity().finish();
                         } else {
                             Toast.makeText(getContext(), "登录失败" + e.getErrorCode() + "-" + e.getMessage(), Toast.LENGTH_SHORT).show();

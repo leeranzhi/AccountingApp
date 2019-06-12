@@ -15,6 +15,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_avatar"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginTop="16dp"
@@ -53,6 +54,7 @@
             android:layout_height="6dp" />
 
         <LinearLayout
+            android:id="@+id/ll_nickname"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:background="@android:color/white">
@@ -90,6 +92,7 @@
             android:layout_height="6dp" />
 
         <LinearLayout
+            android:id="@+id/ll_signature"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:background="@android:color/white">
@@ -122,6 +125,17 @@
                 android:src="@drawable/ic_right_arrow" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/bt_upload"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="80dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="80dp"
+            android:background="@drawable/login_bt_bg"
+            android:visibility="invisible"
+            android:text="上传头像"/>
         <Button
             android:id="@+id/bt_login_out"
             android:layout_width="match_parent"

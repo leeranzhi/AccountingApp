@@ -1,6 +1,7 @@
 package com.leecode1988.accountingapp;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
@@ -12,10 +13,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.mikepenz.google_material_typeface_library.GoogleMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.mikepenz.materialdrawer.AccountHeader;
 import com.mikepenz.materialdrawer.AccountHeaderBuilder;
 import com.mikepenz.materialdrawer.Drawer;
@@ -30,7 +32,22 @@ import com.mikepenz.materialdrawer.model.interfaces.IProfile;
 import com.robinhood.ticker.TickerUtils;
 import com.robinhood.ticker.TickerView;
 
+import java.io.File;
+import java.lang.annotation.Target;
+import java.util.concurrent.ExecutionException;
+
+import cn.bmob.v3.Bmob;
 import cn.bmob.v3.BmobUser;
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.FetchUserInfoListener;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.ObservableSource;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 
 
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
@@ -46,6 +63,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private Drawer result = null;
     private AccountHeader headerResult = null;
     //账户设置标识符
+    private static final int PROFILE_HEADER = 0;
     private static final int PROFILE_SETTING_ADD_COUNT = 1;
     private static final int PROFILE_SETTING = 2;
     //个人简介
@@ -54,6 +72,8 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private IProfile profile3;
 
     private int currentPagerPosition = 0;
+
+    private Bitmap bitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +126,11 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
      * @param savedInstanceState
      */
     private void initDrawer(Bundle savedInstanceState) {
-        profile = new ProfileDrawerItem().withName("Lee Code").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
+        profile = new ProfileDrawerItem()
+                .withName("Lee Code")
+                .withEmail("aiguozhelee@gmail.com")
+                .withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar))
+                .withIdentifier(PROFILE_HEADER);
 //        profile2 = new ProfileDrawerItem().withName("Lee Code2").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
 //        profile3 = new ProfileDrawerItem().withName("Lee Code3").withEmail("aiguozhelee@gmail.com").withIcon(getResources().getDrawable(R.drawable.ic_drawer_avatar));
         //创建AccountHeader
@@ -187,13 +211,25 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                     public boolean onProfileImageClick(View view, IProfile profile, boolean current) {
                         if (profile instanceof IDrawerItem && profile.getIcon() != null) {
                             String isLogin = (String) SPUtil.get("userToken", "");
-                            if (TextUtils.isEmpty(isLogin) && BmobUser.getCurrentUser(BmobUser.class) == null) {
+                            if (TextUtils.isEmpty(isLogin) && BmobUser.getCurrentUser(UserBean.class) == null) {
                                 result.closeDrawer();
                                 LoginActivity.actionStart(MainActivity.this, "");
                                 return true;
                             }
-                            Log.d(TAG, new Gson().toJson(BmobUser.getCurrentUser(BmobUser.class)));
-                            AccountCenterActivity.actionStart(MainActivity.this, BmobUser.getCurrentUser(BmobUser.class));
+                            Log.d(TAG, new Gson().toJson(BmobUser.getCurrentUser(UserBean.class)));
+
+                            //同步本地缓存的用户信息
+                            BmobUser.fetchUserJsonInfo(new FetchUserInfoListener<String>() {
+                                @Override
+                                public void done(String s, BmobException e) {
+                                    if (e == null) {
+
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            AccountCenterActivity.actionStart(MainActivity.this, BmobUser.getCurrentUser(UserBean.class));
                         }
                         return false;
                     }
@@ -218,12 +254,23 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
 //                            }
                         } else if (profile instanceof IDrawerItem && profile.getIdentifier() == PROFILE_SETTING) {
                             String isLogin = (String) SPUtil.get("userToken", "");
-                            if (TextUtils.isEmpty(isLogin)) {
+                            if (TextUtils.isEmpty(isLogin) && BmobUser.getCurrentUser(UserBean.class) == null) {
                                 result.closeDrawer();
                                 LoginActivity.actionStart(MainActivity.this, "");
                                 return true;
                             }
-                            AccountCenterActivity.actionStart(MainActivity.this, BmobUser.getCurrentUser(BmobUser.class));
+                            //同步本地缓存的用户信息
+                            BmobUser.fetchUserJsonInfo(new FetchUserInfoListener<String>() {
+                                @Override
+                                public void done(String s, BmobException e) {
+                                    if (e == null) {
+
+                                    } else {
+                                        Toast.makeText(MainActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+                            AccountCenterActivity.actionStart(MainActivity.this, BmobUser.getCurrentUser(UserBean.class));
                         }
 
                         //如果事件没有被消耗，且应该关闭Drawer，返回false
@@ -232,6 +279,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 })
                 .withSavedInstance(savedInstanceState)
                 .build();
+
     }
 
     @Override
@@ -302,5 +350,47 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     protected void onDestroy() {
         super.onDestroy();
         ActivityCollector.finishAll();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        final UserBean user = BmobUser.getCurrentUser(UserBean.class);
+        if (user != null) {
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    if (user.getAvatarUrl() != null) {
+                        try {
+                            bitmap = Glide.with(getApplicationContext())
+                                    .load(user.getAvatarUrl())
+                                    .asBitmap()
+                                    .centerCrop()
+                                    .into(500, 500)
+                                    .get();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            IProfile newProfile = new ProfileDrawerItem()
+                                    .withName(user.getUsername())
+                                    .withEmail(user.getEmail())
+                                    .withIcon(bitmap)
+                                    .withIdentifier(PROFILE_HEADER);
+
+                            headerResult.updateProfile(newProfile);
+                        }
+                    });
+                }
+            }).start();
+
+        }
+
     }
 }

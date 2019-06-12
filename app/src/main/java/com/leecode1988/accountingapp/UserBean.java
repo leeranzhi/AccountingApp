@@ -1,17 +1,21 @@
 package com.leecode1988.accountingapp;
 
-import cn.bmob.v3.BmobObject;
+import cn.bmob.v3.BmobUser;
 
 /**
  * 用户信息Bean
+ * 对BmobUser进行扩展
  * author:LeeCode
  * create:2019/6/8 13:14
  */
-public class UserBean extends BmobObject {
-    private String name;
+public class UserBean extends BmobUser {
+    //个性签名
     private String signature;
+    //年龄
     private Integer age;
+    //性别
     private Integer gender;
+    //头像Url
     private String avatarUrl;
 
     public String getUserPhone() {
@@ -23,14 +27,6 @@ public class UserBean extends BmobObject {
     }
 
     private String userPhone;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public String getSignature() {
         return signature;

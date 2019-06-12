@@ -148,15 +148,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                     Toast.makeText(LoginActivity.this, "请输入验证码", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                BmobUser.signOrLoginByMobilePhone(phone, code, new LogInListener<BmobUser>() {
+                BmobUser.signOrLoginByMobilePhone(phone, code, new LogInListener<UserBean>() {
                     @Override
-                    public void done(BmobUser bmobUser, BmobException e) {
+                    public void done(UserBean userBean, BmobException e) {
                         if (e == null) {
-                            Toast.makeText(LoginActivity.this, "登录成功" + bmobUser.getUsername(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "登录成功" + userBean.getUsername(), Toast.LENGTH_SHORT).show();
                             //保存至本地
-                            SPUtil.save("userToken", bmobUser.getSessionToken());
-                            Log.d(TAG, "----->" + bmobUser.getSessionToken());
-                            AccountCenterActivity.actionStart(LoginActivity.this, bmobUser);
+                            SPUtil.save("userToken", userBean.getSessionToken());
+                            Log.d(TAG, "----->" + userBean.getSessionToken());
+                            AccountCenterActivity.actionStart(LoginActivity.this, userBean);
                             finish();
                         } else {
                             Toast.makeText(LoginActivity.this, "登录失败" + e.getErrorCode() + "-" + e.getMessage(), Toast.LENGTH_SHORT).show();

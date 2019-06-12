@@ -4,13 +4,21 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import com.leecode1988.accountingapp.EncryptUtil.EncryptMD5Util;
 import com.leecode1988.accountingapp.customview.FixedEditText;
+
+import org.w3c.dom.Text;
+
+import cn.bmob.v3.exception.BmobException;
+import cn.bmob.v3.listener.SaveListener;
 
 /**
  * 邮箱注册登录Fragment
@@ -27,9 +35,9 @@ public class AnotherLoginFragment extends Fragment implements View.OnClickListen
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.another_fragment_login, container, false);
         FixedEditText mail = view.findViewById(R.id.edit_email);
-        mail.setFixedText("邮箱");
+        mail.setFixedText("邮箱 ");
         FixedEditText password = view.findViewById(R.id.edit_password);
-        password.setFixedText("密码");
+        password.setFixedText("密码 ");
         return view;
     }
 
@@ -47,15 +55,77 @@ public class AnotherLoginFragment extends Fragment implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.bt_sign_up:
+            //注册
+            case R.id.bt_sign_up: {
+                String email = editMail.getText().toString().trim();
+                String password = editPassword.getText().toString().trim();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(getActivity(), "请输入邮箱", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(getActivity(), "请输入密码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!RegularUtil.matchEmail(email)) {
+                    Toast.makeText(getActivity(), "请输入正确格式的邮箱", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                //确保用户名和电子邮箱是独一无二的
+                UserBean user = new UserBean();
+                user.setUsername(email);
+                user.setEmail(email);
 
+                //密码进行加密后提交
+                user.setPassword(EncryptMD5Util.repeatEncrypt(password, 2));
+                user.signUp(new SaveListener<UserBean>() {
+                    @Override
+                    public void done(UserBean userBean, BmobException e) {
+                        if (e == null) {
+                            Toast.makeText(getActivity(), "注册成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "注册失败" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                break;
+            }
+            //登录
+            case R.id.bt_login: {
+                String email = editMail.getText().toString().trim();
+                String password = editPassword.getText().toString().trim();
+                if (TextUtils.isEmpty(email)) {
+                    Toast.makeText(getActivity(), "请输入邮箱", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (TextUtils.isEmpty(password)) {
+                    Toast.makeText(getActivity(), "请输入密码", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!RegularUtil.matchEmail(email)) {
+                    Toast.makeText(getActivity(), "请输入正确格式的邮箱", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                UserBean user = new UserBean();
+                user.setUsername(email);
+                user.setPassword(EncryptMD5Util.repeatEncrypt(password, 2));
+                user.login(new SaveListener<UserBean>() {
+                    @Override
+                    public void done(UserBean userBean, BmobException e) {
+                        if (e == null) {
+                            Toast.makeText(getActivity(), "登录成功" + userBean.getUsername(), Toast.LENGTH_SHORT).show();
+                            //保存至本地
+                            SPUtil.save("userToken", userBean.getSessionToken());
+                            AccountCenterActivity.actionStart(getActivity(), userBean);
+                            getActivity().finish();
+                        } else {
+                            Toast.makeText(getActivity(), "登录失败" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
                 break;
-            case R.id.bt_login:
-
-
-
-                break;
+            }
             default:
                 break;
         }
