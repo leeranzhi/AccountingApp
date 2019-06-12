@@ -4,14 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoginFragment">
+    tools:context=".view.fragment.LoginFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginTop="20dp">
 
-        <com.leecode1988.accountingapp.customview.FixedEditText
+        <com.leecode1988.accountingapp.view.customview.FixedEditText
             android:id="@+id/edit_email"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -33,7 +33,7 @@
         android:weightSum="1">
 
 
-        <com.leecode1988.accountingapp.customview.FixedEditText
+        <com.leecode1988.accountingapp.view.customview.FixedEditText
             android:id="@+id/edit_password"
             android:layout_width="match_parent"
             android:layout_height="50dp"

@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".MyApplication"
+        android:name=".appConfig.MyApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -18,24 +18,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppThemeToolbar">
-        <activity android:name=".AnnualStatisticsActivity"></activity>
+        <activity android:name=".activity.AnnualStatisticsActivity"></activity>
 
         <provider
             android:name="cn.bmob.v3.util.BmobContentProvider"
             android:authorities="com.leecode1988.accountingapp.BmobContentProvider" />
 
         <activity
-            android:name=".AccountCenterActivity"
+            android:name=".activity.AccountCenterActivity"
             android:label="@string/title_activity_account_center"
             android:theme="@style/AppThemeToolbar.NoActionBar" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".activity.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppThemeToolbar.NoActionBar" />
-        <activity android:name=".StatisticsActivity" />
+        <activity android:name=".activity.StatisticsActivity" />
         <activity
-            android:name=".MainActivity"
-            android:theme="@style/AppThemeToolbar">
+            android:name=".activity.MainActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,7 +43,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".AddRecordActivity"
+            android:name=".activity.AddRecordActivity"
             android:label="记一笔"
             android:windowSoftInputMode="adjustPan" />
     </application>

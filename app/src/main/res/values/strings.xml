@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AccountingApp</string>
+    <string name="app_name">记账小助手</string>
     <string name="drawer_item_home">首页</string>
     <string name="drawer_item_settings">设置</string>
     <string name="drawer_item_statistics">查看月统计</string>
