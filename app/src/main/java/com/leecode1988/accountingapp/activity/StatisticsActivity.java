@@ -88,8 +88,8 @@ public class StatisticsActivity extends BaseActivity {
                 totalInCome += record.getAmount();
             }
         }
-        expense_text.setText("¥ " + String.valueOf(totalCost));
-        income_text.setText("¥ " + String.valueOf(totalInCome));
+        expense_text.setText("¥ " +NumberUtil.formatDouble(totalCost));
+        income_text.setText("¥ " + NumberUtil.formatDouble(totalInCome));
         //计算结果保留小数点后两位
         // 0.0001->0.00
         // 11.223->11.22

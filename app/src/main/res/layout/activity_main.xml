@@ -52,7 +52,7 @@
                 android:layout_below="@+id/amount_layout"
                 android:layout_centerHorizontal="true"
                 android:text="JUN 22"
-                android:textColor="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimaryLight"
                 android:textStyle="bold" />
         </RelativeLayout>
 

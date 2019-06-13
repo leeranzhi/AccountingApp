@@ -30,8 +30,8 @@
 
 
     //闪屏页主题
-    <style name="SplashTheme" parent="AppThemeToolbar">
 
+    <style name="SplashTheme" parent="AppThemeToolbar">
         <item name="android:windowBackground">@color/colorPrimary</item>
         <item name="android:windowFullscreen">true</item>
     </style>

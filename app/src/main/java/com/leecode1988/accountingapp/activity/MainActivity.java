@@ -64,6 +64,14 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     private static final int PROFILE_HEADER = 0;
     private static final int PROFILE_SETTING_ADD_COUNT = 1;
     private static final int PROFILE_SETTING = 2;
+
+    //item设置标识符
+    private static final int ITEM_HOME = 3;
+    private static final int ITEM_STATISTICS = 4;
+    private static final int ITEM_STATISTICS_YEAR = 5;
+    private static final int ITEM_SETTING = 6;
+    private static final int ITEM_EXIT = 7;
+
     //个人简介
     private IProfile profile;
     private IProfile profile2;
@@ -78,7 +86,7 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setTheme(R.style.AppThemeToolbar);
+        setTheme(R.style.AppTheme);
 
         setContentView(R.layout.activity_main);
 
@@ -144,38 +152,35 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
                 .withToolbar(toolbar)
                 .withAccountHeader(headerResult)
                 .addDrawerItems(
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(R.drawable.ic_drawer_left_home),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_statistics).withIcon(R.drawable.ic_drawer_left_statistics),
-                        new PrimaryDrawerItem().withName(R.string.drawer_item_statistics_year).withIcon(R.drawable.ic_drawer_statistics),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_home).withIcon(R.drawable.ic_drawer_left_home).withIdentifier(ITEM_HOME),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_statistics).withIcon(R.drawable.ic_drawer_left_statistics).withIdentifier(ITEM_STATISTICS),
+                        new PrimaryDrawerItem().withName(R.string.drawer_item_statistics_year).withIcon(R.drawable.ic_drawer_statistics).withIdentifier(ITEM_STATISTICS_YEAR),
                         new SectionDrawerItem().withName(R.string.drawer_item_section_header),
-//                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(GoogleMaterial.Icon.gmd_settings),
-                        new SecondaryDrawerItem().withName(R.string.drawer_item_exit).withIcon(R.drawable.ic_drawer_exit))
+//                        new SecondaryDrawerItem().withName(R.string.drawer_item_settings).withIcon(GoogleMaterial.Icon.gmd_settings).withIdentifier(ITEM_SETTING),
+                        new SecondaryDrawerItem().withName(R.string.drawer_item_exit).withIcon(GoogleMaterial.Icon.gmd_exit_to_app).withIdentifier(ITEM_EXIT))
                 .addStickyDrawerItems()
                 .withOnDrawerItemClickListener(new Drawer.OnDrawerItemClickListener() {
                     @Override
                     public boolean onItemClick(View view, int position, IDrawerItem drawerItem) {
-                        switch (position) {
-                            case 1:
+                        switch ((int) drawerItem.getIdentifier()) {
+                            case ITEM_HOME:
                                 result.closeDrawer();
                                 break;
-                            case 2:
+                            case ITEM_STATISTICS:
                                 result.setSelectionAtPosition(1);
                                 result.closeDrawer();
                                 StatisticsActivity.actionStart(MainActivity.this, "");
                                 break;
-                            case 3:
+                            case ITEM_STATISTICS_YEAR:
                                 result.setSelectionAtPosition(1);
                                 result.closeDrawer();
                                 AnnualStatisticsActivity.actionStart(MainActivity.this, "");
                                 result.closeDrawer();
                                 break;
-                            case 4:
+                            case ITEM_SETTING:
                                 result.closeDrawer();
                                 break;
-                            case 5:
-                                result.closeDrawer();
-                                break;
-                            case 6:
+                            case ITEM_EXIT:
                                 ActivityCollector.finishAll();
                             default:
                                 return false;
