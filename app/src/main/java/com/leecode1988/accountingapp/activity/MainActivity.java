@@ -1,5 +1,6 @@
 package com.leecode1988.accountingapp.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.design.widget.FloatingActionButton;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
@@ -398,5 +400,30 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             }).start();
 
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (result != null && result.isDrawerOpen()) {
+            result.closeDrawer();
+            return true;
+        } else {
+            super.onKeyDown(keyCode, event);
+        }
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            //实现只有在冷启动时显示启动页，即点击返回键与Home键退出效果一致
+            Intent intent = new Intent(Intent.ACTION_MAIN);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            startActivity(intent);
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public static void actionStart(Context context, String data) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra("param1", data);
+        context.startActivity(intent);
     }
 }
