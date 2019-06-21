@@ -25,7 +25,7 @@ public class StartActivity extends BaseActivity {
             public void run() {
                 goToNeteaseHotReview();
             }
-        }, 2000);
+        }, 0);
     }
 
     /**
