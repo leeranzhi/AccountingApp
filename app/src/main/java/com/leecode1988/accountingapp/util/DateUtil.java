@@ -1,4 +1,4 @@
-package com.leecode1988.accountingapp.Util;
+package com.leecode1988.accountingapp.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

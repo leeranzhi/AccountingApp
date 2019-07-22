@@ -36,7 +36,7 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.leecode1988.accountingapp.activity.base.BaseActivity;
 import com.leecode1988.accountingapp.bean.ImageResponse;
 import com.leecode1988.accountingapp.R;
-import com.leecode1988.accountingapp.Util.SPUtil;
+import com.leecode1988.accountingapp.util.SPUtil;
 import com.leecode1988.accountingapp.network.UploadPhotoService;
 import com.leecode1988.accountingapp.bean.UserBean;
 

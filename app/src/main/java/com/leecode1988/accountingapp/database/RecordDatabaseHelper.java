@@ -1,4 +1,4 @@
-package com.leecode1988.accountingapp.dataBase;
+package com.leecode1988.accountingapp.database;
 
 import android.content.ContentValues;
 import android.content.Context;

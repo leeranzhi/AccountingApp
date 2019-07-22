@@ -1,11 +1,11 @@
-package com.leecode1988.accountingapp.Util;
+package com.leecode1988.accountingapp.util;
 
 import android.content.Context;
 
 import com.leecode1988.accountingapp.bean.CategoryResBean;
 import com.leecode1988.accountingapp.activity.MainActivity;
 import com.leecode1988.accountingapp.R;
-import com.leecode1988.accountingapp.dataBase.RecordDatabaseHelper;
+import com.leecode1988.accountingapp.database.RecordDatabaseHelper;
 
 import java.util.LinkedList;
 

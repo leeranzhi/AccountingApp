@@ -1,9 +1,9 @@
-package com.leecode1988.accountingapp.Util;
+package com.leecode1988.accountingapp.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.leecode1988.accountingapp.appConfig.MyApplication;
+import com.leecode1988.accountingapp.app.MyApplication;
 
 import static android.content.Context.MODE_PRIVATE;
 

@@ -6,7 +6,7 @@ import android.os.IBinder;
 
 import com.bumptech.glide.Glide;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.leecode1988.accountingapp.Util.SPUtil;
+import com.leecode1988.accountingapp.util.SPUtil;
 import com.leecode1988.accountingapp.bean.HotReview;
 import com.leecode1988.accountingapp.network.HotReviewSevice;
 

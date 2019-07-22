@@ -18,9 +18,9 @@ import android.widget.Toast;
 
 import com.leecode1988.accountingapp.R;
 import com.leecode1988.accountingapp.bean.UserBean;
-import com.leecode1988.accountingapp.Util.MyCountDownTimer;
-import com.leecode1988.accountingapp.Util.RegularUtil;
-import com.leecode1988.accountingapp.Util.SPUtil;
+import com.leecode1988.accountingapp.util.MyCountDownTimer;
+import com.leecode1988.accountingapp.util.RegularUtil;
+import com.leecode1988.accountingapp.util.SPUtil;
 import com.leecode1988.accountingapp.activity.AccountCenterActivity;
 import com.leecode1988.accountingapp.view.customview.FixedEditText;
 

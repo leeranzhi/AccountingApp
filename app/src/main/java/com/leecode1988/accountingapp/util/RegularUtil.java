@@ -1,4 +1,4 @@
-package com.leecode1988.accountingapp.Util;
+package com.leecode1988.accountingapp.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

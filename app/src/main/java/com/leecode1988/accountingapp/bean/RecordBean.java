@@ -2,7 +2,7 @@ package com.leecode1988.accountingapp.bean;
 
 import android.util.Log;
 
-import com.leecode1988.accountingapp.Util.DateUtil;
+import com.leecode1988.accountingapp.util.DateUtil;
 
 import java.io.Serializable;
 import java.util.UUID;

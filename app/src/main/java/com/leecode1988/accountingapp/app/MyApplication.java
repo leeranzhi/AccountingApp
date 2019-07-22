@@ -1,4 +1,4 @@
-package com.leecode1988.accountingapp.appConfig;
+package com.leecode1988.accountingapp.app;
 
 import android.app.Application;
 import android.content.Context;

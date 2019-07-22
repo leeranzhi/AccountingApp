@@ -1,6 +1,7 @@
 package com.leecode1988.accountingapp.activity;
 
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
@@ -8,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -18,15 +20,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.leecode1988.accountingapp.R;
-import com.leecode1988.accountingapp.Util.SPUtil;
+import com.leecode1988.accountingapp.util.SPUtil;
 import com.leecode1988.accountingapp.activity.base.BaseActivity;
-import com.leecode1988.accountingapp.activity.service.NeteaseHotReviewService;
 import com.leecode1988.accountingapp.bean.HotReview;
 import com.leecode1988.accountingapp.network.HotReviewSevice;
 
 import androidx.annotation.RequiresApi;
 import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
@@ -93,15 +96,35 @@ public class NeteaseHotReviewActivity extends BaseActivity {
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<HotReview>() {
+                .subscribe(new Observer<HotReview>() {
+
                     @Override
-                    public void accept(HotReview hotReview) {
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(HotReview hotReview) {
+                        if (hotReview == null) {
+
+                            return;
+                        }
                         //预加载图片
                         Glide.with(getApplicationContext()).load(hotReview.getImages());
                         //存在本地
                         SPUtil.save("hotImage", hotReview.getImages());
                         SPUtil.save("hotText", hotReview.getComment_content());
                         SPUtil.save("text_title", hotReview.getTitle());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
                     }
                 });
     }
@@ -144,15 +167,11 @@ public class NeteaseHotReviewActivity extends BaseActivity {
         AnimatorSet imageAnim = new AnimatorSet();
         imageAnim.setDuration(1000);
         imageAnim.play(tranImage).with(scaleXImage).with(scaleYImage);
-        imageAnim.start();
 
-        imageAnim.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-            }
-
+        imageAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
                 //等待image动画结束后，开始底部text热评的动画
                 bottomAnim.start();
                 handler.postDelayed(new Runnable() {
@@ -162,15 +181,9 @@ public class NeteaseHotReviewActivity extends BaseActivity {
                     }
                 }, 2000);
             }
-
-            @Override
-            public void onAnimationCancel(Animator animation) {
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animation) {
-            }
         });
+        imageAnim.start();
+
     }
 
     private void startMainActivity() {

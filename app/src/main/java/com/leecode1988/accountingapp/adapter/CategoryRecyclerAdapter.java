@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.leecode1988.accountingapp.R;
 import com.leecode1988.accountingapp.bean.RecordBean;
-import com.leecode1988.accountingapp.Util.GlobalUtil;
+import com.leecode1988.accountingapp.util.GlobalUtil;
 import com.leecode1988.accountingapp.bean.CategoryResBean;
 
 import java.util.LinkedList;
@@ -119,7 +119,7 @@ public class CategoryRecyclerAdapter extends RecyclerView.Adapter<CategoryRecycl
 
     @Override
     public int getItemCount() {
-        return cellList.size();
+        return cellList == null ? 0 : cellList.size();
     }
 
 

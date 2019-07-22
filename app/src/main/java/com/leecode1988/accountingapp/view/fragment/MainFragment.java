@@ -19,8 +19,8 @@ import android.widget.TextView;
 import com.leecode1988.accountingapp.adapter.ListViewAdapter;
 import com.leecode1988.accountingapp.R;
 import com.leecode1988.accountingapp.bean.RecordBean;
-import com.leecode1988.accountingapp.Util.DateUtil;
-import com.leecode1988.accountingapp.Util.GlobalUtil;
+import com.leecode1988.accountingapp.util.DateUtil;
+import com.leecode1988.accountingapp.util.GlobalUtil;
 import com.leecode1988.accountingapp.activity.AddRecordActivity;
 
 import java.util.LinkedList;

@@ -1,4 +1,4 @@
-package com.leecode1988.accountingapp.Util.EncryptUtil;
+package com.leecode1988.accountingapp.util.EncryptUtil;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

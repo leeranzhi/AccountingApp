@@ -1,4 +1,4 @@
-package com.leecode1988.accountingapp.Util;
+package com.leecode1988.accountingapp.util;
 
 /**
  * 数字工具类

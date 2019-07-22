@@ -8,8 +8,8 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 import android.view.ViewGroup;
 
-import com.leecode1988.accountingapp.Util.DateUtil;
-import com.leecode1988.accountingapp.Util.GlobalUtil;
+import com.leecode1988.accountingapp.util.DateUtil;
+import com.leecode1988.accountingapp.util.GlobalUtil;
 import com.leecode1988.accountingapp.view.fragment.MainFragment;
 
 import java.util.LinkedList;
