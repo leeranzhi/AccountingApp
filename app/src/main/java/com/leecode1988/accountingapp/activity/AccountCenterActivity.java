@@ -48,8 +48,10 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FetchUserInfoListener;
 import cn.bmob.v3.listener.UpdateListener;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -204,6 +206,7 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
                         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                         .build();
                 UploadPhotoService service = retrofit.create(UploadPhotoService.class);
+
                 RequestBody body =
                         RequestBody.create(MediaType.parse("image/png"), new File(avatarPath));
                 MultipartBody.Part file = MultipartBody.Part.createFormData("file", new File(avatarPath).getName(), body);
@@ -350,41 +353,53 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
                     Toast.makeText(this, "请修改信息后提交", Toast.LENGTH_SHORT).show();
                     return true;
                 } else {
-                    if (avatarPath != null) {
-                        Toast.makeText(this, "请先上传头像", Toast.LENGTH_SHORT).show();
-                        textUpload.setVisibility(View.VISIBLE);
-                        return true;
-                    }
-                    UserBean newUser = new UserBean();
+                    final UserBean newUser = new UserBean();
                     newUser.setUsername(textNickName.getText().toString().trim());
                     newUser.setSignature(textSignature.getText().toString().trim());
+                    if (avatarPath != null) {
+//                        Toast.makeText(this, "请先上传头像", Toast.LENGTH_SHORT).show();
+//                        textUpload.setVisibility(View.VISIBLE);
+//                        return true;
+                        Log.d(TAG, "test");
+                        Retrofit retrofit = new Retrofit.Builder()
+                                .baseUrl("http://api.szvone.cn/")
+                                .addConverterFactory(GsonConverterFactory.create())
+                                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                                .build();
+                        UploadPhotoService service = retrofit.create(UploadPhotoService.class);
 
-                    if (!TextUtils.isEmpty(avatarUrl)) newUser.setAvatarUrl(avatarUrl);
+                        RequestBody body =
+                                RequestBody.create(MediaType.parse("image/png"), new File(avatarPath));
+                        MultipartBody.Part file = MultipartBody.Part.createFormData("file", new File(avatarPath).getName(), body);
 
-                    UserBean user = BmobUser.getCurrentUser(UserBean.class);
-                    newUser.update(user.getObjectId(), new UpdateListener() {
-                        @Override
-                        public void done(BmobException e) {
-                            if (e == null) {
-                                Toast.makeText(AccountCenterActivity.this, "信息更新成功", Toast.LENGTH_SHORT).show();
-                                nickName = null;
-                                signature = null;
-                                //同步本地缓存的用户信息
-                                BmobUser.fetchUserJsonInfo(new FetchUserInfoListener<String>() {
+                        Observable observable = service.uploadPhoto("l4CjIfY7kSr050UQkQ", file);
+
+                        observable.subscribeOn(Schedulers.io())
+                                .observeOn(Schedulers.io())
+                                .flatMap(new Function<ImageResponse, ObservableSource<String>>() {
                                     @Override
-                                    public void done(String s, BmobException e) {
-                                        if (e == null) {
+                                    public ObservableSource<String> apply(ImageResponse response) throws Exception {
+                                        String avatar = response.getApi_res().getImg_url();
+                                        avatarPath = null;
+//                                        Toast.makeText(AccountCenterActivity.this, "头像上传成功", Toast.LENGTH_SHORT).show();
+//                                        textUpload.setVisibility(View.GONE);
+                                        return Observable.just(avatar);
+                                    }
 
-                                        } else {
-                                            Toast.makeText(AccountCenterActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
-                                        }
+                                })
+                                .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Consumer<String>() {
+                                    @Override
+                                    public void accept(String url) {
+                                        newUser.setAvatarUrl(url);
+                                        updateUser(newUser);
                                     }
                                 });
-                            } else {
-                                Toast.makeText(AccountCenterActivity.this, "信息更新失败" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
+                    } else {
+                        updateUser(newUser);
+                    }
+
+
                 }
                 break;
 
@@ -395,5 +410,37 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
                 break;
         }
         return true;
+    }
+
+    /**
+     * 更新用户信息
+     *
+     * @param newUser
+     */
+    public void updateUser(UserBean newUser) {
+        UserBean user = BmobUser.getCurrentUser(UserBean.class);
+        newUser.update(user.getObjectId(), new UpdateListener() {
+            @Override
+            public void done(BmobException e) {
+                if (e == null) {
+                    Toast.makeText(AccountCenterActivity.this, "信息更新成功", Toast.LENGTH_SHORT).show();
+                    nickName = null;
+                    signature = null;
+                    //同步本地缓存的用户信息
+                    BmobUser.fetchUserJsonInfo(new FetchUserInfoListener<String>() {
+                        @Override
+                        public void done(String s, BmobException e) {
+                            if (e == null) {
+
+                            } else {
+                                Toast.makeText(AccountCenterActivity.this, "请先登录", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } else {
+                    Toast.makeText(AccountCenterActivity.this, "信息更新失败" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
