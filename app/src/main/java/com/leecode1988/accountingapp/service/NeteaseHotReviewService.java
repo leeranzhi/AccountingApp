@@ -1,4 +1,4 @@
-package com.leecode1988.accountingapp.activity.service;
+package com.leecode1988.accountingapp.service;
 
 import android.app.Service;
 import android.content.Intent;

@@ -20,7 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppThemeToolbar">
         <service
-            android:name=".activity.service.NeteaseHotReviewService"
+            android:name=".service.NeteaseHotReviewService"
             android:enabled="true"
             android:exported="true"></service>
 

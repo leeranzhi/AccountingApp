@@ -237,6 +237,15 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
         Log.d(TAG, input);
 
         if (userInput.contains(".")) {
+
+            Log.e(TAG, "onClick1: "+userInput);
+
+            //防止只输入 . 下面代码报空指针的情况
+            if (userInput.startsWith(".")) {
+                userInput = "0" + userInput;
+                Log.e(TAG, "onClick2: "+userInput);
+            }
+
             //小数点后两位数,
             // 分割.前后的位数
             if (userInput.split("\\.").length == 1 || userInput.split("\\.")[1].length() < 2) {
@@ -264,7 +273,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
 
         } else {
             //""
-            if (userInput.equals("")) {
+            if (("").equals(userInput)) {
                 amountText.setText("0.00");
             } else {
                 amountText.setText(userInput + ".00");
