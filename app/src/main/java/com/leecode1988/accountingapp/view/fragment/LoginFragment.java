@@ -68,7 +68,7 @@ public class LoginFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.toString().trim().length() == 11 && RegularUtil.matchPhone(s.toString().trim())) {
-                    btSend.setBackground(getResources().getDrawable(R.drawable.login_bt_bg));
+                    btSend.setBackground(getResources().getDrawable(R.drawable.bt_normal_bg));
                     btSend.setClickable(true);
                 } else {
                     btSend.setBackground(getResources().getDrawable(R.drawable.edit_bg));

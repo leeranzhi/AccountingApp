@@ -77,14 +77,14 @@
         <Button
             android:id="@+id/submit"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="45dp"
             android:layout_gravity="bottom"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:background="@drawable/login_bt_bg"
+            android:background="@drawable/login_bt_selector"
             android:text="登录"
-            android:textColor="@android:color/white"
-            android:textSize="18sp" />
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </LinearLayout>

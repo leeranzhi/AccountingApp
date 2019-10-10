@@ -119,7 +119,7 @@ public class NeteaseHotReviewActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+                        Log.d(TAG, "onError: " + e.getMessage());
                     }
 
                     @Override
@@ -183,7 +183,6 @@ public class NeteaseHotReviewActivity extends BaseActivity {
             }
         });
         imageAnim.start();
-
     }
 
     private void startMainActivity() {

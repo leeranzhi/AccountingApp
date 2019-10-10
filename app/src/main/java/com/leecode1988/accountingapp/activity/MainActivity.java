@@ -87,14 +87,15 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setTheme(R.style.AppTheme);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        setTheme(R.style.AppTheme);
 
         setContentView(R.layout.activity_main);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setTitle("首页");
+
         GlobalUtil.getInstance().setContext(getApplicationContext());
         GlobalUtil.getInstance().mainActivity = this;
 
