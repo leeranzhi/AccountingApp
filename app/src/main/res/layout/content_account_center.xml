@@ -144,7 +144,9 @@
             android:layout_marginLeft="80dp"
             android:layout_marginTop="20dp"
             android:layout_marginRight="80dp"
-            android:background="@drawable/bt_normal_bg"
+            style="?android:attr/borderlessButtonStyle"
+            android:textColor="@android:color/white"
+            android:background="@drawable/login_bt_selector"
             android:text="退出登录" />
     </LinearLayout>
 </RelativeLayout>

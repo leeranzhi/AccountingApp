@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ll_layout"
     android:layout_width="match_parent"
@@ -22,7 +23,9 @@
             android:background="?android:selectableItemBackground"
             android:gravity="center"
             android:textColor="@android:color/white"
-            tools:text="2019/5/19" />
+            tools:text="2019/5/19"
+            android:layout_marginEnd="@dimen/material_drawer_vertical_padding"
+            android:layout_alignParentEnd="true" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -36,7 +39,8 @@
             android:layout_height="220dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentBottom="true">
+            android:layout_alignParentBottom="true"
+            android:baselineAligned="false">
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -46,113 +50,142 @@
                 <TableLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@android:color/white">
+                    android:background="@android:color/white"
+                    tools:ignore="UselessParent">
 
                     <TableRow android:layout_weight="1">
 
                         <Button
                             android:id="@+id/keyboard_seven"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@drawable/btn_touch"
-                            android:text="7" />
+                            android:background="?android:selectableItemBackground"
+                            android:text="@string/_7" />
 
                         <Button
                             android:id="@+id/keyboard_eight"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@android:color/white"
-                            android:text="8" />
+                            android:background="?android:selectableItemBackground"
+                            android:text="@string/_8" />
 
                         <Button
                             android:id="@+id/keyboard_nine"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@android:color/white"
-                            android:text="9" />
+                            android:background="?android:selectableItemBackground"
+                            android:text="@string/_9" />
                     </TableRow>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="0.5dp"
+                        android:background="@color/material_drawer_dark_background" />
 
                     <TableRow android:layout_weight="1">
 
                         <Button
                             android:id="@+id/keyboard_four"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@android:color/white"
-                            android:text="4" />
+                            android:background="?android:selectableItemBackground"
+                            android:text="@string/_4" />
 
                         <Button
                             android:id="@+id/keyboard_five"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
+
                             android:layout_weight="1"
-                            android:background="@android:color/white"
-                            android:text="5" />
+                            android:background="?android:selectableItemBackground"
+                            android:text="@string/_5" />
 
                         <Button
                             android:id="@+id/keyboard_six"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@android:color/white"
-                            android:text="6" />
+                            android:background="?android:selectableItemBackground"
+                            android:text="@string/_6" />
                     </TableRow>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="0.5dp"
+                        android:background="@color/material_drawer_dark_background" />
 
                     <TableRow android:layout_weight="1">
 
                         <Button
                             android:id="@+id/keyboard_one"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@android:color/white"
-                            android:text="1" />
+                            android:background="?android:selectableItemBackground"
+                            android:text="@string/_1" />
 
                         <Button
                             android:id="@+id/keyboard_two"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@android:color/white"
-                            android:text="2" />
+                            android:background="?android:selectableItemBackground"
+                            android:text="@string/_2" />
 
                         <Button
                             android:id="@+id/keyboard_three"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@android:color/white"
-                            android:text="3" />
+                            android:background="?android:selectableItemBackground"
+                            android:text="@string/_3" />
                     </TableRow>
+
+                    <View
+                        android:layout_width="wrap_content"
+                        android:layout_height="0.5dp"
+                        android:background="@color/material_drawer_dark_background" />
 
                     <TableRow android:layout_weight="1">
 
                         <Button
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@android:color/white"
+                            android:background="?android:selectableItemBackground"
                             android:text="" />
 
                         <Button
                             android:id="@+id/keyboard_zero"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@android:color/white"
-                            android:text="0" />
+                            android:background="?android:selectableItemBackground"
+                            android:text="@string/_0" />
 
                         <Button
                             android:id="@+id/keyboard_dot"
+                            style="?android:attr/borderlessButtonStyle"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
-                            android:background="@android:color/white"
-                            android:text="." />
+                            android:background="?android:selectableItemBackground"
+                            android:text="@string/text_spot" />
                     </TableRow>
 
                 </TableLayout>
@@ -166,36 +199,42 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    tools:ignore="UselessParent">
 
                     <ImageButton
                         android:id="@+id/keyboard_type"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:background="@android:color/white"
-                        android:src="@drawable/ic_cover_type" />
+                        android:background="?android:selectableItemBackground"
+                        android:src="@drawable/ic_cover_type"
+                        android:contentDescription="@string/todo" />
 
                     <ImageButton
                         android:id="@+id/keyboard_backspace"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:background="@android:color/white"
-                        android:src="@drawable/ic_backspace" />
+                        android:background="?android:selectableItemBackground"
+                        android:src="@drawable/ic_backspace"
+                        android:contentDescription="@string/todo"/>
 
                     <ImageButton
                         android:id="@+id/keyboard_done"
+                        style="?android:attr/borderlessButtonStyle"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         android:layout_weight="1"
-                        android:background="@android:color/white"
-                        android:src="@drawable/ic_done" />
+                        android:background="?android:selectableItemBackground"
+                        android:src="@drawable/ic_done"
+                        android:contentDescription="@string/todo" />
 
                 </LinearLayout>
 
             </RelativeLayout>
-
 
         </LinearLayout>
 
@@ -210,7 +249,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:gravity="center"
-                android:text="0.00"
+                android:text="@string/_0_00"
                 android:textColor="@android:color/white"
                 android:textSize="60sp" />
 
@@ -222,9 +261,14 @@
                 android:layout_margin="10dp"
                 android:background="@drawable/bg_edit_text"
                 android:padding="10dp"
-                android:text="Book"
+                tools:text="@string/text_book"
                 android:textColor="@android:color/white"
-                android:textSize="26sp" />
+                android:textSize="26sp"
+                android:inputType="text"
+                android:imeOptions="actionDone"
+                android:maxLines="1"
+                android:importantForAutofill="no"
+                tools:ignore="LabelFor" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"
