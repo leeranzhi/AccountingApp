@@ -26,7 +26,6 @@ import com.leecode1988.accountingapp.util.GlobalUtil;
 
 import java.util.Calendar;
 
-
 public class AddRecordActivity extends BaseActivity implements View.OnClickListener, CategoryRecyclerAdapter.OnCategoryClickListener, DatePickerDialog.OnDateSetListener {
 
     private static final String TAG = "AddRecordActivity";
@@ -46,6 +45,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
     RecordBean record = new RecordBean();
     private boolean inEditMode = false;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,6 +53,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
 
         initView();
     }
+
 
     private void initView() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -91,7 +92,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
             amountText.setText(record.getAmount() + "");
             userInput = String.valueOf(record.getAmount());
             type = record.getType() == 1 ? RecordBean.RecordType.RECORD_TYPE_EXPENSE :
-                    RecordBean.RecordType.RECORD_TYPE_INCOME;
+                   RecordBean.RecordType.RECORD_TYPE_INCOME;
         }
 
         if (inEditMode) {
@@ -117,6 +118,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
 
     }
 
+
     /**
      * 解析toolbar标题栏时间点击事件
      */
@@ -126,13 +128,14 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
             public void onClick(View v) {
                 final Calendar calendar = Calendar.getInstance();
                 DatePickerDialog dialog = new DatePickerDialog(AddRecordActivity.this,
-                        AddRecordActivity.this, calendar.get(Calendar.YEAR),
-                        calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                    AddRecordActivity.this, calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
                 dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
                 dialog.show();
             }
         });
     }
+
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -148,11 +151,21 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
         toolbarTime.setText(date);
     }
 
+
     private void handleDot() {
         findViewById(R.id.keyboard_dot).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, "Dot: ");
+
+                /**
+                 *
+                 * TODO
+                 * 解决只输入 . 出现格式转化错误的问题。
+                 */
+                if (userInput.equals("")) {
+                    return;
+                }
 
                 if (!userInput.contains(".")) {
                     userInput += ".";
@@ -160,6 +173,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
             }
         });
     }
+
 
     private void handleTypeChanged() {
         findViewById(R.id.keyboard_type).setOnClickListener(new View.OnClickListener() {
@@ -180,6 +194,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
         });
     }
 
+
     private void handleBackspace() {
         findViewById(R.id.keyboard_backspace).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -197,6 +212,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
             }
         });
     }
+
 
     private void handleDone() {
         findViewById(R.id.keyboard_done).setOnClickListener(new View.OnClickListener() {
@@ -229,6 +245,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
         });
     }
 
+
     @Override
     public void onClick(View v) {
         Button button = (Button) v;
@@ -238,12 +255,12 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
 
         if (userInput.contains(".")) {
 
-            Log.e(TAG, "onClick1: "+userInput);
+            Log.e(TAG, "onClick1: " + userInput);
 
             //防止只输入 . 下面代码报空指针的情况
             if (userInput.startsWith(".")) {
                 userInput = "0" + userInput;
-                Log.e(TAG, "onClick2: "+userInput);
+                Log.e(TAG, "onClick2: " + userInput);
             }
 
             //小数点后两位数,
@@ -257,6 +274,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
 
         updateAmountText();
     }
+
 
     private void updateAmountText() {
         Log.d(TAG, "userInput is " + userInput);
@@ -282,11 +300,13 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
         }
     }
 
+
     public static void actionStart(Context context, String data) {
         Intent intent = new Intent(context, AddRecordActivity.class);
         intent.putExtra("param1", data);
         context.startActivity(intent);
     }
+
 
     @Override
     public void onClick(String category) {
@@ -294,6 +314,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
         editText.setText(category);
         Log.d(TAG, "Category:" + category);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -304,6 +325,7 @@ public class AddRecordActivity extends BaseActivity implements View.OnClickListe
         }
         return super.onOptionsItemSelected(item);
     }
+
 
     @Override
     public void onBackPressed() {
