@@ -22,14 +22,15 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "Record";
     private static final String CREATE_RECORD_DB = "create table Record("
-            + "id integer primary key autoincrement,"
-            + "uuid text,"
-            + "type integer,"
-            + "category text,"
-            + "amount real,"
-            + "remark text,"
-            + "time integer,"
-            + "date date)";
+        + "id integer primary key autoincrement,"
+        + "uuid text,"
+        + "type integer,"
+        + "category text,"
+        + "amount real,"
+        + "remark text,"
+        + "time integer,"
+        + "date date)";
+
 
     public RecordDatabaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
@@ -43,10 +44,12 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_RECORD_DB);
     }
 
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
     }
+
 
     public void addRecord(RecordBean bean) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -63,22 +66,25 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, bean.getUuid() + "---->added");
     }
 
+
     public void removeRecord(String uuid) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(DB_NAME, "uuid = ?", new String[]{uuid});
+        db.delete(DB_NAME, "uuid = ?", new String[] { uuid });
     }
+
 
     public void editRecord(String uuid, RecordBean bean) {
         removeRecord(uuid);
         bean.setUuid(uuid);
         addRecord(bean);
     }
-//    public void updateRecord(String uuid,Object type,Object itemValue){
-//        SQLiteDatabase db=this.getWritableDatabase();
-//        ContentValues values=new ContentValues();
-//        values.put((String)type,  itemValue);
-//        db.update(DB_NAME,values,"uuid=?",new String[]{uuid});
-//    }
+    //    public void updateRecord(String uuid,Object type,Object itemValue){
+    //        SQLiteDatabase db=this.getWritableDatabase();
+    //        ContentValues values=new ContentValues();
+    //        values.put((String)type,  itemValue);
+    //        db.update(DB_NAME,values,"uuid=?",new String[]{uuid});
+    //    }
+
 
     /**
      * 查询特定日期的Records
@@ -89,8 +95,8 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
     public LinkedList<RecordBean> queryRecords(String dateStr) {
         LinkedList<RecordBean> records = new LinkedList<>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select DISTINCT * from Record where date = ? order by time asc", new String[]{dateStr});
-//        Cursor cursor1=db.query(DB_NAME,null,"where date = ?",new String[]{dateStr},null,null,"order by time");
+        Cursor cursor = db.rawQuery("select DISTINCT * from Record where date = ? order by time asc", new String[] { dateStr });
+        //        Cursor cursor1=db.query(DB_NAME,null,"where date = ?",new String[]{dateStr},null,null,"order by time");
         if (cursor.moveToFirst()) {
             do {
                 String uuid = cursor.getString(cursor.getColumnIndex("uuid"));
@@ -115,6 +121,7 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         return records;
     }
+
 
     /**
      * 查询时间段的账单
@@ -125,7 +132,7 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
     public LinkedList<RecordBean> queryRecordsByKey(String dateStrFirst, String dataStrLast) {
         LinkedList<RecordBean> records = new LinkedList<>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select DISTINCT * from Record where date>=? AND date<=? order by date asc", new String[]{dateStrFirst, dataStrLast});
+        Cursor cursor = db.rawQuery("select DISTINCT * from Record where date>=? AND date<=? order by date asc", new String[] { dateStrFirst, dataStrLast });
         if (cursor.moveToFirst()) {
 
             do {
@@ -152,6 +159,7 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
         return records;
     }
 
+
     /**
      * 查询出账单存在的日期，且日期去重。
      *
@@ -161,7 +169,7 @@ public class RecordDatabaseHelper extends SQLiteOpenHelper {
 
         LinkedList<String> dates = new LinkedList<>();
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery("select DISTINCT * from Record order by date asc", new String[]{});
+        Cursor cursor = db.rawQuery("select DISTINCT * from Record order by date asc", new String[] {});
         if (cursor.moveToFirst()) {
 
             do {
