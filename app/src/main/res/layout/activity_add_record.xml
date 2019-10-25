@@ -18,14 +18,14 @@
             android:id="@+id/toolbar_time"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/material_drawer_vertical_padding"
             android:layout_marginRight="@dimen/material_drawer_vertical_padding"
             android:background="?android:selectableItemBackground"
             android:gravity="center"
             android:textColor="@android:color/white"
-            tools:text="2019/5/19"
-            android:layout_marginEnd="@dimen/material_drawer_vertical_padding"
-            android:layout_alignParentEnd="true" />
+            tools:text="2019/5/19" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -209,8 +209,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:background="?android:selectableItemBackground"
-                        android:src="@drawable/ic_cover_type"
-                        android:contentDescription="@string/todo" />
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/ic_cover_type" />
 
                     <ImageButton
                         android:id="@+id/keyboard_backspace"
@@ -219,8 +219,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:background="?android:selectableItemBackground"
-                        android:src="@drawable/ic_backspace"
-                        android:contentDescription="@string/todo"/>
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/ic_backspace" />
 
                     <ImageButton
                         android:id="@+id/keyboard_done"
@@ -229,8 +229,8 @@
                         android:layout_height="0dp"
                         android:layout_weight="1"
                         android:background="?android:selectableItemBackground"
-                        android:src="@drawable/ic_done"
-                        android:contentDescription="@string/todo" />
+                        android:contentDescription="@string/todo"
+                        android:src="@drawable/ic_done" />
 
                 </LinearLayout>
 
@@ -260,15 +260,15 @@
                 android:layout_below="@+id/textView_addView_amount"
                 android:layout_margin="10dp"
                 android:background="@drawable/bg_edit_text"
+                android:imeOptions="actionDone"
+                android:importantForAutofill="no"
+                android:inputType="text"
+                android:maxLines="1"
                 android:padding="10dp"
-                tools:text="@string/text_book"
                 android:textColor="@android:color/white"
                 android:textSize="26sp"
-                android:inputType="text"
-                android:imeOptions="actionDone"
-                android:maxLines="1"
-                android:importantForAutofill="no"
-                tools:ignore="LabelFor" />
+                tools:ignore="LabelFor"
+                tools:text="@string/text_book" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView"

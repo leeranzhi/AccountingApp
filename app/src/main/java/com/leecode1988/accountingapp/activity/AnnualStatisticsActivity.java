@@ -43,6 +43,9 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+/**
+ * 年度统计
+ */
 public class AnnualStatisticsActivity extends BaseActivity {
     private static final String TAG = "AnnualStatistics";
 
@@ -54,12 +57,14 @@ public class AnnualStatisticsActivity extends BaseActivity {
     //年度最后一天
     private String lastDay;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_annual_statistics);
         initView();
     }
+
 
     private void initView() {
         initToolbar();
@@ -115,6 +120,7 @@ public class AnnualStatisticsActivity extends BaseActivity {
         listView.setAdapter(adapter);
     }
 
+
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -124,12 +130,13 @@ public class AnnualStatisticsActivity extends BaseActivity {
         }
     }
 
-    private class ChartAdapter extends ArrayAdapter<ChartItem> {
 
+    private class ChartAdapter extends ArrayAdapter<ChartItem> {
 
         ChartAdapter(@NonNull Context context, List<ChartItem> objects) {
             super(context, 0, objects);
         }
+
 
         @NonNull
         @Override
@@ -137,11 +144,13 @@ public class AnnualStatisticsActivity extends BaseActivity {
             return getItem(position).getView(position, convertView, getContext());
         }
 
+
         @Override
         public int getItemViewType(int position) {
             ChartItem charItem = getItem(position);
             return charItem != null ? charItem.getItemType() : 0;
         }
+
 
         @Override
         public int getViewTypeCount() {
@@ -149,6 +158,7 @@ public class AnnualStatisticsActivity extends BaseActivity {
         }
 
     }
+
 
     /**
      * 生成折线图
@@ -185,7 +195,6 @@ public class AnnualStatisticsActivity extends BaseActivity {
             values.add(new Entry(i, (float) amount));
         }
 
-
         //设置折线图的属性
         LineDataSet d1 = new LineDataSet(values, "支出折线图");
         d1.setLineWidth(2.5f);
@@ -193,13 +202,13 @@ public class AnnualStatisticsActivity extends BaseActivity {
         d1.setHighLightColor(Color.rgb(244, 117, 117));
         d1.setDrawValues(true);
 
-
         ArrayList<ILineDataSet> sets = new ArrayList<>();
         sets.add(d1);
 
         return new LineData(sets);
 
     }
+
 
     /**
      * 生成条形图
@@ -235,6 +244,7 @@ public class AnnualStatisticsActivity extends BaseActivity {
         return cd;
     }
 
+
     /**
      * 生成饼状图
      */
@@ -263,11 +273,13 @@ public class AnnualStatisticsActivity extends BaseActivity {
         return new PieData(d);
     }
 
+
     public static void actionStart(Context context, String data) {
         Intent intent = new Intent(context, AnnualStatisticsActivity.class);
         intent.putExtra("param1", data);
         context.startActivity(intent);
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
