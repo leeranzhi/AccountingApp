@@ -76,6 +76,7 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
     private static final int CHOOSE_PHOTO = 2;
     private Button textUpload;
 
+
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +84,7 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
         setContentView(R.layout.activity_account_center);
         initView();
     }
+
 
     private void initView() {
         initToolbar();
@@ -116,6 +118,7 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
 
     }
 
+
     private void initToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -126,11 +129,13 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
         actionBar.setTitle("个人信息");
     }
 
+
     public static void actionStart(Context context, UserBean user) {
         Intent intent = new Intent(context, AccountCenterActivity.class);
         intent.putExtra("user", user);
         context.startActivity(intent);
     }
+
 
     @Override
     public void onClick(View v) {
@@ -142,14 +147,16 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
                 SPUtil.clearAll();
                 finish();
                 break;
-            case R.id.ll_avatar:
-            case R.id.image_avatar: {
+            case R.id.ll_avatar: {
                 if (ContextCompat.checkSelfPermission(AccountCenterActivity.this,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                    ActivityCompat.requestPermissions(AccountCenterActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(AccountCenterActivity.this, new String[] { Manifest.permission.WRITE_EXTERNAL_STORAGE }, 1);
                 } else {
                     openAlum();
                 }
+                break;
+            }
+            case R.id.image_avatar: {
                 break;
             }
             case R.id.ll_nickname:
@@ -201,29 +208,29 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
             case R.id.bt_upload: {
                 Log.d(TAG, "test");
                 Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl("http://api.szvone.cn/")
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                        .build();
+                    .baseUrl("http://api.szvone.cn/")
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .build();
                 UploadPhotoService service = retrofit.create(UploadPhotoService.class);
 
                 RequestBody body =
-                        RequestBody.create(MediaType.parse("image/png"), new File(avatarPath));
+                    RequestBody.create(MediaType.parse("image/png"), new File(avatarPath));
                 MultipartBody.Part file = MultipartBody.Part.createFormData("file", new File(avatarPath).getName(), body);
 
                 Observable observable = service.uploadPhoto("l4CjIfY7kSr050UQkQ", file);
 
                 observable.subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Consumer<ImageResponse>() {
-                            @Override
-                            public void accept(ImageResponse imageResponse) {
-                                avatarUrl = imageResponse.getApi_res().getImg_url();
-                                avatarPath = null;
-                                Toast.makeText(AccountCenterActivity.this, "头像上传成功", Toast.LENGTH_SHORT).show();
-                                textUpload.setVisibility(View.GONE);
-                            }
-                        });
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Consumer<ImageResponse>() {
+                        @Override
+                        public void accept(ImageResponse imageResponse) {
+                            avatarUrl = imageResponse.getApi_res().getImg_url();
+                            avatarPath = null;
+                            Toast.makeText(AccountCenterActivity.this, "头像上传成功", Toast.LENGTH_SHORT).show();
+                            textUpload.setVisibility(View.GONE);
+                        }
+                    });
 
                 break;
             }
@@ -231,6 +238,7 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
                 break;
         }
     }
+
 
     /**
      * 打开image媒体文件
@@ -240,6 +248,7 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
         intent.setType("image/*");
         startActivityForResult(intent, CHOOSE_PHOTO);
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -254,6 +263,7 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
             default:
         }
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -270,11 +280,13 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+
     private void handleImageBeforeKitKat(Intent data) {
         Uri uri = data.getData();
         String imagePath = getImagePath(uri, null);
         displayImage(imagePath);
     }
+
 
     /**
      * 解析图片
@@ -295,11 +307,11 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
                 String id = docId.split(":")[1]; //解析出数字格式的id
                 String selection = MediaStore.Images.Media._ID + "=" + id;
                 imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                        selection);
+                    selection);
             } else if ("com.android.providers.downloads.documents".equals
-                    (uri.getAuthority())) {
+                (uri.getAuthority())) {
                 Uri contentUri = ContentUris.withAppendedId(Uri.parse("content:" +
-                        "//downloads/public_downloads"), Long.valueOf(docId));
+                    "//downloads/public_downloads"), Long.valueOf(docId));
                 imagePath = getImagePath(contentUri, null);
             }
         } else if ("content".equalsIgnoreCase(uri.getScheme())) {
@@ -312,6 +324,7 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
         displayImage(imagePath); //根据图片路径选择图片
     }
 
+
     /**
      * 显示图片
      *
@@ -320,16 +333,17 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
     private void displayImage(String imagePath) {
         avatarPath = imagePath;
         Glide.with(this)
-                .load(imagePath)
-                .centerCrop()
-                .into(imageAvatar);
+            .load(imagePath)
+            .centerCrop()
+            .into(imageAvatar);
     }
+
 
     private String getImagePath(Uri uri, String selection) {
         String path = null;
         //通过Uri和selection来获取真实的图片路径
         Cursor cursor = getContentResolver().query(uri, null, selection,
-                null, null);
+            null, null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
@@ -339,11 +353,13 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
         return path;
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.account_center_toolbar, menu);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -357,48 +373,47 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
                     newUser.setUsername(textNickName.getText().toString().trim());
                     newUser.setSignature(textSignature.getText().toString().trim());
                     if (avatarPath != null) {
-//                        Toast.makeText(this, "请先上传头像", Toast.LENGTH_SHORT).show();
-//                        textUpload.setVisibility(View.VISIBLE);
-//                        return true;
+                        //                        Toast.makeText(this, "请先上传头像", Toast.LENGTH_SHORT).show();
+                        //                        textUpload.setVisibility(View.VISIBLE);
+                        //                        return true;
                         Log.d(TAG, "test");
                         Retrofit retrofit = new Retrofit.Builder()
-                                .baseUrl("http://api.szvone.cn/")
-                                .addConverterFactory(GsonConverterFactory.create())
-                                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                                .build();
+                            .baseUrl("http://api.szvone.cn/")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                            .build();
                         UploadPhotoService service = retrofit.create(UploadPhotoService.class);
 
                         RequestBody body =
-                                RequestBody.create(MediaType.parse("image/png"), new File(avatarPath));
+                            RequestBody.create(MediaType.parse("image/png"), new File(avatarPath));
                         MultipartBody.Part file = MultipartBody.Part.createFormData("file", new File(avatarPath).getName(), body);
 
                         Observable observable = service.uploadPhoto("l4CjIfY7kSr050UQkQ", file);
 
                         observable.subscribeOn(Schedulers.io())
-                                .observeOn(Schedulers.io())
-                                .flatMap(new Function<ImageResponse, ObservableSource<String>>() {
-                                    @Override
-                                    public ObservableSource<String> apply(ImageResponse response) throws Exception {
-                                        String avatar = response.getApi_res().getImg_url();
-                                        avatarPath = null;
-//                                        Toast.makeText(AccountCenterActivity.this, "头像上传成功", Toast.LENGTH_SHORT).show();
-//                                        textUpload.setVisibility(View.GONE);
-                                        return Observable.just(avatar);
-                                    }
+                            .observeOn(Schedulers.io())
+                            .flatMap(new Function<ImageResponse, ObservableSource<String>>() {
+                                @Override
+                                public ObservableSource<String> apply(ImageResponse response) throws Exception {
+                                    String avatar = response.getApi_res().getImg_url();
+                                    avatarPath = null;
+                                    //                                        Toast.makeText(AccountCenterActivity.this, "头像上传成功", Toast.LENGTH_SHORT).show();
+                                    //                                        textUpload.setVisibility(View.GONE);
+                                    return Observable.just(avatar);
+                                }
 
-                                })
-                                .observeOn(AndroidSchedulers.mainThread())
-                                .subscribe(new Consumer<String>() {
-                                    @Override
-                                    public void accept(String url) {
-                                        newUser.setAvatarUrl(url);
-                                        updateUser(newUser);
-                                    }
-                                });
+                            })
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe(new Consumer<String>() {
+                                @Override
+                                public void accept(String url) {
+                                    newUser.setAvatarUrl(url);
+                                    updateUser(newUser);
+                                }
+                            });
                     } else {
                         updateUser(newUser);
                     }
-
 
                 }
                 break;
@@ -411,6 +426,7 @@ public class AccountCenterActivity extends BaseActivity implements View.OnClickL
         }
         return true;
     }
+
 
     /**
      * 更新用户信息

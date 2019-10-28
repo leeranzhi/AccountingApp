@@ -5,7 +5,7 @@
         <shape android:shape="rectangle">
             <!-- 填充背景色-->
             <solid android:color="@color/primary" />
-            <corners android:radius="6dp" />
+            <corners android:radius="5dp" />
         </shape>
     </item>
 </ripple>

@@ -14,7 +14,7 @@
 
         <include layout="@layout/layout_toolbar" />
 
-        <Button
+        <TextView
             android:id="@+id/toolbar_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -23,7 +23,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/material_drawer_vertical_padding"
             android:layout_marginRight="@dimen/material_drawer_vertical_padding"
-            android:background="?attr/selectableItemBackground"
+            android:background="@drawable/ripple_bg"
             android:gravity="center"
             android:padding="8dp"
             android:textColor="@android:color/white"
