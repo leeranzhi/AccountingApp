@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -49,6 +50,7 @@ public class NeteaseHotReviewActivity extends BaseActivity {
 
     private Handler handler = new Handler();
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +59,7 @@ public class NeteaseHotReviewActivity extends BaseActivity {
         initView();
         initAnims();
     }
+
 
     private void initView() {
         textHotReview = findViewById(R.id.text);
@@ -67,18 +70,21 @@ public class NeteaseHotReviewActivity extends BaseActivity {
         String hotText = (String) SPUtil.get("hotText", "");
         String hotTextTitle = (String) SPUtil.get("text_title", "");
 
-        if (hotImageUrl != null && hotText != null && hotTextTitle != null) {
+        if (!TextUtils.isEmpty(hotImageUrl) && TextUtils.isEmpty(hotText) && TextUtils.isEmpty(hotTextTitle)) {
             textHotReview.setText("“" + hotText + "”");
             textTitle.setText("--《" + hotTextTitle + "》");
             Glide.with(this).load(hotImageUrl).into(imageHotReview);
         } else {
-            textHotReview.setText("“我记得他的样子，我不知道他的名字”");
+            textHotReview.setText("“你如此苍白是不是 已倦于在空中攀登并凝望地面你倦于 孑然一生的漫游在 有不同身世的群星之间你盈缺无常像眼睛含着忧愁是因为 看不到什么值得凝眸吗”");
             textTitle.setText("--《大鱼》");
+            Glide.with(getApplicationContext())
+                .load("https://p2.music.126.net/aiPQXP8mdLovQSrKsM3hMQ==/1416170985079958.jpg")
+                .into(imageHotReview);
         }
         //进行更新新的热评到本地
         update();
-
     }
+
 
     /**
      * 更新本地的热评数据
@@ -86,48 +92,51 @@ public class NeteaseHotReviewActivity extends BaseActivity {
     private void update() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.comments.hk/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
+            .baseUrl("https://api.comments.hk/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build();
         HotReviewSevice service = retrofit.create(HotReviewSevice.class);
 
         Observable observable = service.getHotReview();
 
         observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<HotReview>() {
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(new Observer<HotReview>() {
 
-                    @Override
-                    public void onSubscribe(Disposable d) {
+                @Override
+                public void onSubscribe(Disposable d) {
 
+                }
+
+
+                @Override
+                public void onNext(HotReview hotReview) {
+                    if (hotReview == null) {
+                        return;
                     }
+                    //预加载图片
+                    Glide.with(getApplicationContext()).load(hotReview.getImages());
+                    //存在本地
+                    SPUtil.save("hotImage", hotReview.getImages());
+                    SPUtil.save("hotText", hotReview.getComment_content());
+                    SPUtil.save("text_title", hotReview.getTitle());
+                }
 
-                    @Override
-                    public void onNext(HotReview hotReview) {
-                        if (hotReview == null) {
 
-                            return;
-                        }
-                        //预加载图片
-                        Glide.with(getApplicationContext()).load(hotReview.getImages());
-                        //存在本地
-                        SPUtil.save("hotImage", hotReview.getImages());
-                        SPUtil.save("hotText", hotReview.getComment_content());
-                        SPUtil.save("text_title", hotReview.getTitle());
-                    }
+                @Override
+                public void onError(Throwable e) {
+                    Log.d(TAG, "onError: " + e.getMessage());
+                }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        Log.d(TAG, "onError: " + e.getMessage());
-                    }
 
-                    @Override
-                    public void onComplete() {
+                @Override
+                public void onComplete() {
 
-                    }
-                });
+                }
+            });
     }
+
 
     private void initAnims() {
         //以控件自身所在位置为原点，从下方距离原点200像素的位置移动到原点
@@ -185,9 +194,11 @@ public class NeteaseHotReviewActivity extends BaseActivity {
         imageAnim.start();
     }
 
+
     private void startMainActivity() {
         MainActivity.actionStart(NeteaseHotReviewActivity.this, "");
     }
+
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
