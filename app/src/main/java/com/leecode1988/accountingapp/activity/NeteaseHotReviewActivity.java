@@ -70,7 +70,7 @@ public class NeteaseHotReviewActivity extends BaseActivity {
         String hotText = (String) SPUtil.get("hotText", "");
         String hotTextTitle = (String) SPUtil.get("text_title", "");
 
-        if (!TextUtils.isEmpty(hotImageUrl) && TextUtils.isEmpty(hotText) && TextUtils.isEmpty(hotTextTitle)) {
+        if (!TextUtils.isEmpty(hotImageUrl) && !TextUtils.isEmpty(hotText) && !TextUtils.isEmpty(hotTextTitle)) {
             textHotReview.setText("“" + hotText + "”");
             textTitle.setText("--《" + hotTextTitle + "》");
             Glide.with(this).load(hotImageUrl).into(imageHotReview);
