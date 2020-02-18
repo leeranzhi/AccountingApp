@@ -41,6 +41,28 @@ public class HotReview {
     private String comment_content;
     private String comment_pub_date;
 
+
+    @Override public String toString() {
+        return "HotReview{" +
+            "song_id=" + song_id +
+            ", title='" + title + '\'' +
+            ", images='" + images + '\'' +
+            ", author='" + author + '\'' +
+            ", album='" + album + '\'' +
+            ", description='" + description + '\'' +
+            ", mp3_url='" + mp3_url + '\'' +
+            ", pub_date='" + pub_date + '\'' +
+            ", comment_id=" + comment_id +
+            ", comment_user_id=" + comment_user_id +
+            ", comment_nickname='" + comment_nickname + '\'' +
+            ", comment_avatar_url='" + comment_avatar_url + '\'' +
+            ", comment_liked_count=" + comment_liked_count +
+            ", comment_content='" + comment_content + '\'' +
+            ", comment_pub_date='" + comment_pub_date + '\'' +
+            '}';
+    }
+
+
     public long getSong_id() {
         return song_id;
     }

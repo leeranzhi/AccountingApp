@@ -5,9 +5,11 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import androidx.annotation.RequiresApi;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -21,17 +23,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.leecode1988.accountingapp.R;
+import com.leecode1988.accountingapp.service.NeteaseHotReviewService;
 import com.leecode1988.accountingapp.util.SPUtil;
 import com.leecode1988.accountingapp.activity.base.BaseActivity;
 import com.leecode1988.accountingapp.bean.HotReview;
 import com.leecode1988.accountingapp.network.HotReviewSevice;
 
-import androidx.annotation.RequiresApi;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -82,7 +83,9 @@ public class NeteaseHotReviewActivity extends BaseActivity {
                 .into(imageHotReview);
         }
         //进行更新新的热评到本地
-        update();
+        // update();
+        Intent startServiceIntent = new Intent(this, NeteaseHotReviewService.class);
+        startService(startServiceIntent);
     }
 
 

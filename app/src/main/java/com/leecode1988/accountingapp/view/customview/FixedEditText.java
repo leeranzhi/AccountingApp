@@ -12,7 +12,7 @@ import android.view.View;
  * author:LeeCode
  * create:2019/6/7 17:04
  */
-public class FixedEditText extends android.support.v7.widget.AppCompatEditText {
+public class FixedEditText extends androidx.appcompat.widget.AppCompatEditText {
     private String fixedText;
     private View.OnClickListener mListener;
     private int leftPadding;

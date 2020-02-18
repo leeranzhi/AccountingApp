@@ -4,6 +4,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import android.util.Log;
 import com.bumptech.glide.Glide;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import com.leecode1988.accountingapp.util.SPUtil;
@@ -23,8 +24,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Deprecated
 public class NeteaseHotReviewService extends Service {
+    private static final String TAG = "NeteaseHotReviewService";
+
+
     public NeteaseHotReviewService() {
     }
+
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -32,11 +37,26 @@ public class NeteaseHotReviewService extends Service {
         return null;
     }
 
+
+    @Override public void onCreate() {
+        super.onCreate();
+        Log.d(TAG, "onCreate: ");
+    }
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         update();
-        return super.onStartCommand(intent, flags, startId);
+        Log.d(TAG, "onStartCommand: ");
+        return START_STICKY;
     }
+
+
+    @Override public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, "onDestroy: ");
+    }
+
 
     /**
      * 更新本地的热评数据
@@ -44,23 +64,27 @@ public class NeteaseHotReviewService extends Service {
     private void update() {
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://api.comments.hk/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .build();
+            .baseUrl("https://api.comments.hk/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .build();
         HotReviewSevice service = retrofit.create(HotReviewSevice.class);
         Observable observable = service.getHotReview();
         observable.subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<HotReview>() {
-                    @Override
-                    public void accept(HotReview hotReview) throws Exception {
-                        //存在本地
-                        SPUtil.save("hotImage", hotReview.getImages());
-                        Glide.with(getApplicationContext()).load(hotReview.getImages());
-                        SPUtil.save("hotText", hotReview.getComment_content());
-                        SPUtil.save("text_title", hotReview.getTitle());
-                    }
-                });
+            .subscribe(new Consumer<HotReview>() {
+                @Override
+                public void accept(HotReview hotReview) {
+                    Log.d(TAG, "accept: " + hotReview);
+                    //存在本地
+                    SPUtil.save("hotImage", hotReview.getImages());
+                    Glide.with(getApplicationContext()).load(hotReview.getImages());
+                    SPUtil.save("hotText", hotReview.getComment_content());
+                    SPUtil.save("text_title", hotReview.getTitle());
+                }
+            }, new Consumer<Throwable>() {
+                @Override public void accept(Throwable throwable) {
+                    Log.d(TAG, "accept:  throwable " + throwable.getMessage());
+                }
+            });
     }
 }
