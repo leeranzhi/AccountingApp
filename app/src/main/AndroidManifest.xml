@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.leecode1988.accountingapp">
 
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <!-- 闪光灯权限 -->
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <!-- 振动器权限 -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <!-- 允许联网 -->
     <application
         android:name=".app.MyApplication"

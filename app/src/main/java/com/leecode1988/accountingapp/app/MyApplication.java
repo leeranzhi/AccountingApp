@@ -13,12 +13,14 @@ import cn.bmob.v3.Bmob;
 public class MyApplication extends Application {
     private static Context context;
 
+
     @Override
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
         Bmob.initialize(this, "8509b314f8fe7e67b2a3cc095ef8351c");
     }
+
 
     public static Context getContext() {
         return context;
